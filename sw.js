@@ -1,6 +1,6 @@
 // Offline-Unterstützung: alle App-Dateien werden beim ersten Besuch gespeichert.
 // Bei jeder Änderung an Dateien VERSION erhöhen, damit Geräte die neue Fassung laden.
-const VERSION = "kopffit-v8";
+const VERSION = "kopffit-v9";
 const DATEIEN = [
   "./",
   "index.html",

@@ -4,7 +4,7 @@ import { load, save } from "./store.js";
 export const DEFAULT_SETTINGS = {
   schrift: "gross",      // normal | gross | extra
   blatt: "franzoesisch", // franzoesisch | deutsch
-  vorlesen: true,
+  autoVorlesen: false,   // Anleitungen/Ergebnisse von selbst vorlesen (Knopf „Vorlesen“ geht immer)
   kontrast: false,
   ruhig: false,          // Animationen reduzieren
 };

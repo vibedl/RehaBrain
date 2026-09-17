@@ -1,5 +1,5 @@
 // Vorlesen über die kostenlose Sprachausgabe des Browsers (offline auf den meisten Geräten)
-let enabled = true;
+let enabled = false; // automatisches Vorlesen ist standardmäßig aus
 export const setSpeechEnabled = (v) => { enabled = v; };
 
 function germanVoice() {

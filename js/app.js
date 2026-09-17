@@ -71,7 +71,7 @@ function applySettings() {
   root.dataset.schrift = s?.schrift ?? "gross";
   root.dataset.kontrast = s?.kontrast ? "hoch" : "normal";
   root.dataset.ruhig = s?.ruhig ? "ja" : "nein";
-  setSpeechEnabled(s?.vorlesen ?? true);
+  setSpeechEnabled(s?.autoVorlesen ?? false);
   const dunkel = root.dataset.theme === "dunkel" || (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
   document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dunkel ? "#161514" : "#F9F7F4");
 }
@@ -374,7 +374,7 @@ function zeigeEinstellungen() {
       wahl("Schriftgröße", "schrift", [["normal", "Normal"], ["gross", "Groß"], ["extra", "Sehr groß"]]),
       wahl("Kartenblatt", "blatt", [["franzoesisch", "Französisch ♣ ♠ ♥ ♦"], ["deutsch", "Deutsch (Eichel, Grün, Rot, Schellen)"]]),
       skatRegeln(),
-      wahl("Vorlesen", "vorlesen", [[true, "An"], [false, "Aus"]]),
+      wahl("Automatisch vorlesen", "autoVorlesen", [[false, "Aus"], [true, "An"]]),
       wahl("Stärkerer Kontrast", "kontrast", [[false, "Aus"], [true, "An"]]),
       wahl("Weniger Bewegung", "ruhig", [[false, "Aus"], [true, "An"]]),
       h("section.einstellung", {},
