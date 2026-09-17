@@ -1,0 +1,91 @@
+/* Rommé (Präfix ro-) und Sechsundsechzig (Präfix ss-). Läuft auf dem dunklen Tisch (.uebung.tisch). */
+
+/* ================================================================ Rommé */
+
+.ro-tisch { gap: 16px; }
+.ro-tisch .kt-hand { gap: 10px; }
+.ro-tisch .kt-hand .karte { width: clamp(70px, 10.5vw, 112px); }
+
+/* Joker: eigene Karte mit Kronen-Zeichnung */
+.karte.ro-joker { --kf: var(--copper-dark, #8F4323); }
+.ro-jokerbild { display: grid; place-items: center; width: 1em; height: 1em; }
+.ro-jokerbild svg { width: 100%; height: 100%; display: block; }
+.karte.ro-joker .mitte.ro-jokerbild { font-size: 3em; }
+
+/* Ablage antippbar */
+.ro-ablage { border-radius: 16px; }
+.ro-ablage.ro-tippbar { cursor: pointer; }
+.ro-ablage.ro-tippbar .karte { outline: 3px solid rgba(243, 239, 234, 0.45); outline-offset: 5px; }
+.ro-ablage.ro-tippbar:focus-visible { outline: 4px solid #fff; outline-offset: 6px; }
+.ro-leer, .ss-leer {
+  width: clamp(100px, 20vw, 150px); aspect-ratio: 5 / 7; border-radius: 14px; display: grid; place-items: center;
+  border: 2px dashed rgba(243, 239, 234, 0.3); color: rgba(243, 239, 234, 0.72); font-weight: 600; text-align: center; padding: 6px;
+}
+
+/* Ausgelegte Kombinationen */
+.ro-auslage { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 16px; width: min(100%, 1000px); }
+.ro-leertext { margin: 0; color: rgba(243, 239, 234, 0.72); font-weight: 600; }
+.ro-kombi {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: var(--tippmin); min-width: var(--tippmin);
+  padding: 10px 12px 8px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(255, 255, 255, 0.1); color: #fff; font: inherit;
+}
+button.ro-kombi { cursor: pointer; border-color: rgba(243, 239, 234, 0.35); }
+button.ro-kombi:hover { background: rgba(224, 169, 127, 0.12); }
+button.ro-kombi:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+button.ro-kombi:active { transform: scale(.98); }
+button.ro-kombi:disabled { cursor: default; opacity: .8; }
+.ro-kombikarten { display: flex; }
+.ro-kombikarten .karte { width: 54px; font-size: .5em; box-shadow: 0 6px 12px -6px rgba(0, 0, 0, .6); }
+.ro-kombikarten .karte + .karte { margin-left: -20px; }
+.ro-kombikarten .karte .mitte { font-size: 2.6em; }
+.ro-kombiname { font-size: 1em; color: rgba(243, 239, 234, 0.72); font-weight: 600; }
+
+.ro-info { min-height: 1.4em; }
+.ro-sortieren { margin-block: 0; }
+.uebung.tisch .ro-sortieren .knopf.ro-aktiv { border-color: var(--copper-light, #E0A97F); }
+.kt-hand.kt-waehlbar .karte.ro-anlegbar { box-shadow: 0 0 0 5px var(--blau, #3F6390), 0 18px 36px -14px rgba(0, 0, 0, 0.55); }
+.kt-hand .karte.ro-neu:not(.kt-gewaehlt)::after {
+  content: ""; position: absolute; left: 50%; top: -12px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%;
+  background: var(--copper-light, #E0A97F);
+}
+
+/* ================================================================ Sechsundsechzig */
+
+.ss-tisch { gap: 16px; }
+.ss-stand { margin: 0; text-align: center; }
+.ss-augen { min-height: 1.4em; }
+
+.ss-stich { display: flex; justify-content: center; gap: clamp(16px, 5vw, 40px); min-height: 1em; }
+.ss-platz { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ss-platz .karte { width: clamp(90px, 16vw, 130px); font-size: .85em; }
+.ss-platz .ss-leer { width: clamp(90px, 16vw, 130px); }
+.ss-platztext { color: rgba(243, 239, 234, 0.72); font-weight: 600; }
+.ss-sieger .karte { box-shadow: 0 0 0 5px var(--sage, #4E7057), 0 18px 36px -14px rgba(0, 0, 0, 0.55); }
+.ss-sieger .ss-platztext { color: #fff; }
+
+/* Zugedrehter Talon */
+.kt-nachzieh.ss-zu .karte { transform: rotate(90deg) scale(.85); opacity: .7; }
+.ss-zuchip { display: block; margin-top: 8px; text-align: center; }
+
+/* Tastenfeld fürs Mitzählen */
+.ss-rechnen { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; }
+.uebung.tisch .ss-eingabe { color: #fff; }
+.taste.ss-wort { font-family: var(--sans); font-size: 1.05em; font-weight: 600; }
+
+@media (max-width: 600px) {
+  .ro-tisch .kt-hand .karte { width: 62px; font-size: .62em; }
+  .ro-kombikarten .karte { width: 44px; }
+  .ro-kombikarten .karte + .karte { margin-left: -18px; }
+  .ss-platz .karte, .ss-platz .ss-leer { width: 84px; }
+}
+
+/* ---------- Kompakt für Tablet quer (Koordinator): Stapel und Stich nebeneinander ---------- */
+@media (min-width: 900px) and (max-height: 1000px) {
+  .kt-tisch.ss-tisch { display: grid; grid-template-columns: 1fr 1fr; justify-items: center; align-items: center; column-gap: 24px; row-gap: 8px; }
+  .kt-tisch.ss-tisch > * { grid-column: 1 / -1; }
+  .kt-tisch.ss-tisch > .kt-mitte { grid-column: 1; justify-self: end; }
+  .kt-tisch.ss-tisch > .ss-stich { grid-column: 2; justify-self: start; }
+  .kt-tisch.ro-tisch .kt-mitte { flex-direction: row; }
+  .ro-tisch .ro-sortieren, .ro-tisch .kt-aktionen { margin-block: 4px; }
+}

@@ -1,0 +1,95 @@
+/* Gedächtnis-Module: Einkaufsliste (gd-liste-), Gesichter & Namen (gd-gesicht-), Alltag (gd-alltag-)
+   plus gemeinsame Bausteine (gd-frage, gd-antwort, gd-zwischen). Farben für Lebensmittel,
+   Haut und Haare als eigene Variablen; sie funktionieren im hellen und im dunklen Modus. */
+
+:root {
+  --gd-rot: #D9534A; --gd-orange: #EE9A3A; --gd-gelb: #F2CC4B; --gd-gelbhell: #F7E3A1;
+  --gd-gruen: #6FA356; --gd-gruenhell: #B9D98A; --gd-braun: #8A5A3B; --gd-hellbraun: #D9A86C;
+  --gd-weiss: #FFFDF8; --gd-blauhell: #A9CDEB; --gd-lila: #8E5C9E; --gd-rosa: #F0A9B8;
+  --gd-wurst: #C0645A; --gd-zwiebel: #E2B36F; --gd-honig: #E8A93A;
+  --gd-haut-1: #F6DCC6; --gd-haut-2: #EBC19E; --gd-haut-3: #D39C74; --gd-haut-4: #A9714B; --gd-haut-5: #7A4E33;
+  --gd-haar-schwarz: #2B2522; --gd-haar-braun: #6B4530; --gd-haar-blond: #D8B26A; --gd-haar-rot: #B0542E;
+  --gd-haar-grau: #9C9A96; --gd-haar-weiss: #E4E1DC;
+  --gd-uhr-zeiger: #A9532D; --gd-tinte: #1C1917; --gd-tinte-hell: #665F55;
+  --gd-augen: #2B2522; --gd-kontur: #4A3A31; --gd-mund: #9C4B42;
+}
+
+/* ---------- Gemeinsam ---------- */
+.gd-frage { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; }
+.gd-antworten { margin-block: 8px; max-width: 900px; }
+.gd-antwort { min-width: calc(var(--tippmin) * 2.2); font-size: 1.15em; }
+.gd-antwort:disabled { cursor: default; opacity: .75; }
+.gd-antwort.gd-gewaehlt { opacity: 1; border-color: var(--ink); }
+.gd-antwort.gd-richtig { opacity: 1; border: 3px solid var(--sage); background: var(--sage-light); color: var(--ink); }
+.gd-zwischen { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+.gd-zwischen .hinweis.gross { font-size: 2.2em; letter-spacing: .04em; }
+
+/* ---------- Einkaufsliste ---------- */
+.gd-liste-flaeche { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+.gd-liste-zettel {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px;
+  width: min(100%, 820px); padding: 24px; border-radius: var(--radius-lg);
+  background: var(--kartenweiss); border: 1px solid var(--line-strong); box-shadow: var(--shadow-md);
+}
+.gd-liste-artikel {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  min-height: var(--tippmin); padding: 10px; color: var(--ink); font: 600 1.05em var(--sans);
+  border-radius: var(--radius-md); background: var(--card); border: 2px solid var(--line);
+}
+.gd-liste-zettel .gd-liste-artikel { background: transparent; border-color: transparent; color: var(--gd-tinte); }
+/* Symbole immer mit dunkler Kontur auf hellem Teller – bleibt im dunklen Modus gut lesbar */
+.gd-liste-bild { display: block; box-sizing: border-box; width: 84px; height: 84px; padding: 6px; border-radius: 50%; background: var(--kartenweiss); color: var(--gd-tinte); }
+.gd-liste-bild svg { width: 100%; height: 100%; }
+.gd-liste-einzeln .gd-liste-artikel { padding: 28px 48px; font-size: 1.8em; box-shadow: var(--shadow-md); }
+.gd-liste-einzeln .gd-liste-bild { width: 200px; height: 200px; padding: 14px; }
+.gd-liste-raster {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; width: min(100%, 900px);
+}
+button.gd-liste-artikel { cursor: pointer; min-height: calc(var(--tippmin) * 1.7); box-shadow: var(--highlight), var(--shadow-sm); }
+button.gd-liste-artikel:disabled { cursor: default; }
+.gd-liste-artikel.gd-liste-an { border: 4px solid var(--copper); background: var(--copper-subtle); }
+.gd-liste-artikel.gd-liste-getroffen { border: 4px solid var(--sage); background: var(--sage-light); }
+.gd-liste-artikel.gd-liste-vergessen { border: 4px dashed var(--sage); }
+
+/* ---------- Gesichter & Namen ---------- */
+.gd-gesicht-flaeche { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; }
+.gd-gesicht-bild { display: block; width: 110px; aspect-ratio: 120 / 140; max-width: 100%; border-radius: var(--radius-md); overflow: hidden; }
+.gd-gesicht-bild svg { display: block; width: 100%; height: 100%; }
+.gd-gesicht-bild.gd-gesicht-gross { width: min(62vw, 240px); box-shadow: var(--shadow-md); }
+.gd-gesicht-bild.gd-gesicht-mittel { width: min(50vw, 180px); box-shadow: var(--shadow-md); }
+.gd-gesicht-steckbrief { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.gd-gesicht-name { margin: 6px 0 0; font: 500 2em/1.1 var(--serif); color: var(--ink); }
+.gd-gesicht-info { margin: 0; font-size: 1.15em; font-weight: 600; color: var(--muted); }
+.gd-gesicht-galerie { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px; width: min(100%, 900px); }
+.gd-gesicht-kachel {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px; text-align: center;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+}
+.gd-gesicht-kachel .gd-gesicht-name { font-size: 1.3em; }
+.gd-gesicht-kachel .gd-gesicht-info { font-size: 1em; }
+.gd-gesicht-wahl .gd-antwort { padding: 10px; min-width: 0; }
+.gd-gesicht-wahl .gd-gesicht-bild { width: min(38vw, 150px); }
+
+/* ---------- Alltag ---------- */
+.gd-alltag-flaeche { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+.gd-alltag-zettel {
+  width: min(100%, 560px); padding: 28px 32px; border-radius: var(--radius-lg);
+  padding-top: 38px; background: var(--kartenweiss); color: var(--gd-tinte); border: 1px solid var(--line-strong);
+  --gd-alltag-band: var(--copper); box-shadow: inset 0 10px 0 var(--gd-alltag-band), var(--shadow-md);
+}
+.gd-alltag-notiz { --gd-alltag-band: var(--sage); }
+.gd-alltag-pinzettel { --gd-alltag-band: var(--blau); text-align: center; }
+.gd-alltag-titel { margin: 0 0 12px; font: 600 1.1em var(--sans); color: var(--gd-tinte-hell); }
+.gd-alltag-zeilen { margin: 0; padding-left: 1.2em; font: 500 1.6em/1.45 var(--serif); }
+.gd-alltag-termin .gd-alltag-zeilen { list-style: none; padding-left: 0; }
+.gd-alltag-pin { margin: 0; font: 500 3.6em/1.1 var(--serif); letter-spacing: .08em; }
+.gd-alltag-uhrbox { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.gd-alltag-uhr { width: min(80vw, 320px); aspect-ratio: 1; }
+.gd-alltag-uhr svg { width: 100%; height: 100%; }
+
+@media (max-width: 600px) {
+  .gd-liste-zettel, .gd-liste-raster { grid-template-columns: repeat(2, 1fr); }
+  .gd-alltag-zeilen { font-size: 1.3em; }
+  .gd-alltag-pin { font-size: 2.6em; }
+}
+.gd-alltag-uhr text { font-family: var(--serif); }

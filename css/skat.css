@@ -1,0 +1,103 @@
+/* Skat und Skat-Schule. Präfix sk-. Läuft auf dem dunklen Tisch (.uebung.tisch), daher helle Schrift. */
+
+/* ---------- Skat-Tisch ---------- */
+.sk-tisch { gap: 14px; }
+.sk-mitte { display: flex; flex-direction: column; align-items: center; gap: 10px; width: min(100%, 900px); }
+.sk-info { margin: 0; text-align: center; color: #fff; font-weight: 600; min-height: 1.3em; }
+.sk-hilfe { margin: 0; text-align: center; color: var(--copper-light, #E0A97F); font-weight: 600; }
+.sk-hilfe:empty, .sk-letzter:empty { display: none; }
+.sk-letzter { margin: 0; text-align: center; color: rgba(243, 239, 234, 0.72); }
+
+/* Stich: links Computer 1, rechts Computer 2, unten Sie */
+.sk-stich {
+  display: grid; grid-template-columns: repeat(3, auto); grid-template-rows: auto auto;
+  justify-content: center; align-items: start; column-gap: clamp(10px, 3vw, 34px); row-gap: 0;
+}
+.sk-slot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.sk-p1 { grid-column: 1; grid-row: 1; }
+.sk-p2 { grid-column: 3; grid-row: 1; }
+.sk-p0 { grid-column: 2; grid-row: 2; margin-top: calc(clamp(80px, 13vw, 118px) * -0.55); }
+.sk-slotkarte { display: flex; justify-content: center; }
+.sk-slotkarte .karte { width: clamp(80px, 13vw, 118px); font-size: .75em; }
+.sk-leer {
+  width: clamp(80px, 13vw, 118px); aspect-ratio: 5 / 7; border-radius: 12px;
+  border: 2px dashed rgba(255, 255, 255, 0.14);
+}
+.sk-slotname { color: rgba(243, 239, 234, 0.72); font-weight: 600; }
+.sk-slot.sk-amzug .sk-slotname { color: var(--copper-light, #E0A97F); }
+.sk-slot.sk-sieger .karte { box-shadow: 0 0 0 5px var(--sage, #4E7057), 0 18px 36px -14px rgba(0, 0, 0, 0.55); }
+.sk-slot.sk-sieger .sk-slotname { color: #fff; }
+.sk-skatzeige { display: flex; gap: 10px; }
+
+/* Gespielte Karten (Hilfe) */
+.sk-gespielt { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; color: rgba(243, 239, 234, 0.85); }
+.sk-gespielt:empty, .sk-offen:empty { display: none; }
+.sk-glabel { width: 100%; text-align: center; color: rgba(243, 239, 234, 0.72); font-weight: 600; }
+.sk-gzeile { display: inline-flex; align-items: center; gap: 6px; font-size: 1em; }
+.sk-gzeile .farbsymbol { display: inline-flex; width: 1.1em; height: 1.1em; }
+.sk-gzeile .farbsymbol svg { width: 100%; height: 100%; }
+.sk-offen { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.sk-offenkarten { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.sk-offenkarten .karte { width: clamp(52px, 8vw, 72px); font-size: .5em; }
+
+/* Punkteliste */
+.sk-listeansicht { display: flex; flex-direction: column; align-items: center; gap: 18px; width: min(100%, 820px); }
+.sk-titel { margin: 0; font-family: var(--serif); font-weight: 500; color: #fff; }
+.sk-tabellenrahmen { width: 100%; overflow-x: auto; }
+.sk-liste { width: 100%; border-collapse: collapse; color: #fff; font-size: 1em; }
+.sk-liste th, .sk-liste td { padding: 12px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); text-align: left; vertical-align: middle; }
+.sk-liste th { color: rgba(243, 239, 234, 0.72); font-weight: 600; }
+.sk-liste .sk-zahl { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sk-liste tfoot td { font-weight: 700; border-bottom: 0; }
+.sk-zeile-bock td { background: rgba(224, 169, 127, 0.08); }
+.sk-zeile-ramsch td { background: rgba(78, 112, 87, 0.14); }
+.sk-marke { display: inline-block; margin-left: 8px; padding: 2px 10px; border-radius: 999px; font-size: .85em; font-weight: 700; }
+.sk-marke-bock { background: var(--copper-dark, #A9532D); color: var(--on-accent, #FFF9F2); }
+.sk-marke-ramsch { background: var(--sage, #4E7057); color: #fff; }
+
+/* ---------- Skat-Schule ---------- */
+.sk-schule { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; }
+.sk-frage { max-width: 760px; }
+.sk-schule-stich { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.sk-schule-stich:empty { display: none; }
+.sk-schule-stich .karte { width: clamp(80px, 13vw, 110px); font-size: .7em; }
+.sk-schule-label { width: 100%; text-align: center; color: rgba(243, 239, 234, 0.72); font-weight: 600; }
+.sk-schule-karten { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; width: min(100%, 1000px); }
+.sk-schule-karten .karte { width: clamp(110px, 20vw, 160px); }
+.sk-schule-karten.sk-viele .karte { width: clamp(76px, 12vw, 112px); font-size: .75em; }
+.sk-schule-karten button.karte:focus-visible { outline: 4px solid #fff; outline-offset: 4px; }
+.sk-schule-karten .karte.sk-richtig { box-shadow: 0 0 0 6px var(--sage, #4E7057), 0 18px 36px -14px rgba(0, 0, 0, 0.55); }
+.sk-schule-karten .karte.sk-blass { opacity: .45; }
+.sk-schule-knoepfe { justify-content: center; }
+.sk-antwort { min-width: calc(var(--tippmin) * 1.6); font-size: 1.25em; }
+.uebung.tisch .sk-antwort.sk-richtig { background: var(--sage); color: #fff; border-color: transparent; }
+.sk-erklaerung { min-height: 1.3em; max-width: 760px; }
+.uebung.tisch .sk-erklaerung { color: #fff; }
+
+@media (max-width: 600px) {
+  .sk-slotkarte .karte, .sk-leer { width: 70px; }
+  .sk-slotkarte .karte { font-size: .6em; }
+  .sk-p0 { margin-top: -30px; }
+  .sk-liste th, .sk-liste td { padding: 8px 6px; }
+  .sk-schule-karten .karte { width: clamp(90px, 28vw, 130px); }
+  .sk-schule-karten.sk-viele .karte { width: 68px; font-size: .6em; }
+}
+
+/* ---------- Kompakt für Tablet quer / Laptop (Koordinator) ----------
+   Alles Wichtige (Gegner, Stich, eigene Hand, Knöpfe) soll ohne Scrollen sichtbar sein. */
+@media (min-width: 700px) and (max-height: 1000px) {
+  .uebung.tisch:has(.sk-tisch) { padding-block: 14px 18px; }
+  .sk-tisch { gap: 8px; }
+  .sk-tisch .kt-gegner { padding-block: 4px; }
+  .sk-tisch .kt-faecher { transform: scale(.75); }
+  .sk-tisch .kt-status { font-size: 1.15em; margin: 0; }
+  .sk-mitte { gap: 4px; }
+  .sk-stich { grid-template-columns: repeat(3, auto); grid-template-rows: auto; column-gap: 18px; }
+  .sk-p1, .sk-p0, .sk-p2 { grid-row: 1; margin-top: 0; }
+  .sk-p1 { grid-column: 1; } .sk-p0 { grid-column: 2; } .sk-p2 { grid-column: 3; }
+  .sk-slotkarte .karte, .sk-leer { width: clamp(64px, 7.5vw, 90px); }
+  .sk-slotkarte .karte { font-size: .62em; }
+  .sk-tisch .kt-hand { flex-wrap: nowrap; gap: 0; min-height: 0; padding-top: 10px; }
+  .sk-tisch .kt-hand .karte { width: clamp(70px, 8.4vw, 100px); font-size: .68em; flex: none; }
+  .sk-tisch .kt-hand .karte + .karte { margin-left: -8px; }
+}

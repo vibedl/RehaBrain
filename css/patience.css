@@ -1,0 +1,104 @@
+/* Patience (Klondike, Freecell). Präfix pa-. Läuft auf dem dunklen Tisch (.uebung.tisch).
+   Kartenbreite --pa-w wird im Skript so gesetzt, dass das Spiel auf dem Tablet quer ohne Scrollen passt. */
+
+.pa-tisch { display: flex; flex-direction: column; align-items: stretch; gap: 12px; width: 100%; }
+.pa-status { min-height: 1.5em; text-align: center; margin-top: -8px; }
+.pa-info { color: rgba(243, 239, 234, 0.72); }
+.pa-aktionen { justify-content: center; gap: 10px; }
+.pa-aktionen .pa-knopf { padding-inline: 20px; }
+.pa-frage { justify-content: center; }
+.pa-tisch > .pa-frage { order: 1; } .pa-tisch > .pa-info { order: 0; } .pa-tisch > .pa-aktionen { order: 1; } .pa-tisch > .pa-brett { order: 2; }
+
+/* Tablet quer und Computer: Knöpfe rechts neben dem Spiel, damit die Karten größer werden */
+@media (orientation: landscape) and (min-width: 900px) {
+  .pa-tisch { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr; column-gap: 16px; }
+  .pa-tisch > .pa-info { grid-column: 1 / -1; }
+  .pa-tisch > .pa-brett { grid-column: 1; grid-row: 2; }
+  .pa-tisch > .pa-aktionen { grid-column: 2; grid-row: 2; flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; margin: 8px 0 0; width: 190px; }
+  .pa-tisch > .pa-aktionen .pa-knopf { width: 100%; min-width: 0; }
+  .pa-tisch > .pa-frage { grid-column: 1 / -1; grid-row: 2; align-self: start; z-index: 5; background: var(--feature, #2A2623); padding: 16px; border-radius: var(--radius-md); }
+}
+
+.pa-brett {
+  --pa-w: 100px; --pa-h: calc(var(--pa-w) * 1.4); --pa-luecke: 12px;
+  display: flex; flex-direction: column; gap: calc(var(--pa-w) * .25); width: 100%; overflow-x: auto; padding: 8px 4px 4px;
+}
+
+/* obere Reihe: Stapel, Abwurf bzw. freie Felder, Ablagen */
+.pa-oben { display: flex; gap: var(--pa-luecke); justify-content: safe center; width: max-content; min-width: 100%; align-items: flex-start; }
+.pa-luecke { flex: 1 1 0; min-width: 0; max-width: var(--pa-w); }
+.pa-freecell .pa-luecke { max-width: calc(var(--pa-w) * .5); }
+.pa-abwurf, .pa-zelle, .pa-ablage { width: var(--pa-w); height: var(--pa-h); position: relative; flex: none; }
+
+.pa-platz {
+  width: var(--pa-w); height: var(--pa-h); flex: none; position: relative; padding: 0; margin: 0;
+  border-radius: calc(var(--pa-w) * .09); border: 2px dashed rgba(243, 239, 234, 0.3); background: rgba(255, 255, 255, 0.03);
+  color: rgba(243, 239, 234, 0.55); font: inherit; cursor: pointer; display: grid; place-items: center;
+}
+.pa-platz.pa-leer { cursor: default; }
+.pa-stapel { border: 0; background: none; }
+.pa-stapel.pa-leer { border: 2px dashed rgba(243, 239, 234, 0.3); cursor: pointer; }
+.pa-stapel .karte { position: absolute; inset: 0; }
+.pa-zahl {
+  position: absolute; bottom: calc(var(--pa-w) * -.02); left: 50%; transform: translate(-50%, 50%);
+  background: var(--feature-card, #36302C); color: #fff; border-radius: 999px; padding: 0 .55em; font-size: .85em; font-weight: 700;
+}
+.pa-kreis { width: 42%; aspect-ratio: 1; border: 3px solid rgba(243, 239, 234, 0.5); border-radius: 50%; border-top-color: transparent; }
+.pa-platztext { position: absolute; bottom: 10%; font-weight: 600; font-size: .85em; }
+.pa-farbe { font-size: calc(var(--pa-w) * .42); line-height: 1; opacity: .5; }
+.pa-f0, .pa-f1 { color: #F3EFEA; } .pa-f2, .pa-f3 { color: #E58A66; }
+
+/* Reihen */
+.pa-spalten {
+  display: grid; grid-template-columns: repeat(var(--pa-n, 7), var(--pa-w)); justify-content: safe center; width: max-content; min-width: 100%;
+  gap: var(--pa-luecke); min-height: var(--pa-h);
+}
+
+
+.pa-spalte { position: relative; width: var(--pa-w); height: 100%; border-radius: calc(var(--pa-w) * .09); cursor: pointer; }
+.pa-spalte:focus-visible { outline: 4px solid #fff; outline-offset: 4px; }
+.pa-leerplatz {
+  position: absolute; left: 0; top: 0; width: var(--pa-w); height: var(--pa-h); border-radius: calc(var(--pa-w) * .09);
+  border: 2px dashed rgba(243, 239, 234, 0.3); pointer-events: none;
+}
+
+/* Karten auf dem Patience-Tisch: kleiner, Wert und Zeichen in einer Zeile oben links (bleibt bei Überlappung sichtbar) */
+.pa-brett .karte {
+  width: var(--pa-w); height: var(--pa-h); font-size: calc(var(--pa-w) * .17); border-radius: calc(var(--pa-w) * .09);
+  box-shadow: 0 4px 10px -4px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(0, 0, 0, .12);
+}
+.pa-spalte .karte { position: absolute; left: 0; }
+.pa-brett .karte .ecke { flex-direction: row; gap: .08em; top: .22em; left: .3em; font-size: 1.35em; font-weight: 600; }
+.pa-brett .karte .ecke .farbsymbol { font-size: .8em; }
+.pa-brett .karte .mitte { font-size: 2.6em; margin-top: .35em; }
+.pa-brett .karte .wert { font-size: 1.1em; bottom: .3em; right: .35em; }
+.pa-brett .karte.rueckseite { box-shadow: 0 4px 10px -4px rgba(0, 0, 0, .55), inset 0 0 0 calc(var(--pa-w) * .04) rgba(255, 249, 242, .9); }
+/* klassisch zweifarbig: rot auf schwarz muss auf einen Blick erkennbar sein */
+.pa-brett .karte.kreuz, .pa-brett .karte.pik { --kf: #1C1917; }
+.pa-brett .karte.herz, .pa-brett .karte.karo { --kf: #B8321E; }
+.pa-brett button.karte:focus-visible { outline: 4px solid #fff; outline-offset: 2px; z-index: 2; }
+
+/* Markierungen */
+.pa-brett .karte.pa-gewaehlt {
+  box-shadow: 0 0 0 calc(var(--pa-w) * .05) var(--copper-light, #E0A97F), 0 10px 22px -8px rgba(0, 0, 0, .8);
+  transform: translateY(calc(var(--pa-w) * -.06));
+}
+.pa-brett .karte.pa-blockiert { filter: brightness(.82); }
+.pa-ziel.pa-spalte::after, .pa-ablage.pa-ziel::after, .pa-platz.pa-ziel::after {
+  content: ""; position: absolute; left: -6px; right: -6px; top: -6px; bottom: -6px; border-radius: calc(var(--pa-w) * .12);
+  border: 4px solid var(--sage-light, #8FB39A); pointer-events: none;
+}
+.pa-ziel.pa-spalte::after { min-height: calc(var(--pa-h) + 12px); }
+.pa-tipp.karte, .pa-platz.pa-tipp, .pa-ablage.pa-tipp, .pa-spalte.pa-tipp { animation: pa-puls 1.1s ease-in-out 3; }
+.pa-brett .karte.pa-tipp { box-shadow: 0 0 0 calc(var(--pa-w) * .05) #F3EFEA, 0 10px 22px -8px rgba(0, 0, 0, .8); }
+.pa-spalte.pa-tipp::before, .pa-ablage.pa-tipp::before, .pa-platz.pa-tipp::before {
+  content: ""; position: absolute; left: -6px; right: -6px; top: -6px; height: calc(var(--pa-h) + 12px); border-radius: calc(var(--pa-w) * .12);
+  border: 4px dashed #F3EFEA; pointer-events: none; z-index: 3;
+}
+@keyframes pa-puls { 50% { opacity: .6; } }
+.pa-gesperrt .pa-brett { pointer-events: none; }
+
+@media (max-width: 600px) {
+  .pa-aktionen .pa-knopf { flex: 1 1 40%; padding-inline: 10px; }
+  .pa-brett .karte .mitte { display: none; }
+}

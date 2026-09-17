@@ -1,0 +1,105 @@
+/* Kopf-Fit – Module „Geteilte Aufmerksamkeit“, „Durchstreichen“, „Blicksprung“, „Figuren vergleichen“
+   Präfixe: sr-geteilt-, sr-durch-, sr-blick-, sr-figuren- */
+
+/* ---------- Geteilte Aufmerksamkeit ---------- */
+.sr-geteilt-feld {
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 4vw, 48px); width: 100%; max-width: 900px;
+}
+.sr-geteilt-flaeche {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  min-height: max(calc(var(--tippmin) * 3), 44vh); padding: 18px 12px; font: inherit; color: var(--ink); cursor: pointer;
+  background: var(--card); border: 2px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--highlight), var(--shadow-md);
+  transition: border-color .15s, background .15s;
+}
+.sr-geteilt-flaeche:active { background: var(--canvas-alt); }
+.sr-geteilt-titel { font-weight: 700; color: var(--muted); text-align: center; font-size: 1em; }
+.sr-geteilt-ok { animation: sr-geteilt-ok .6s ease-out; }
+@keyframes sr-geteilt-ok { from { border-color: var(--sage); background: var(--sage-light); } }
+
+.sr-geteilt-lampe { width: min(60%, 180px); }
+.sr-geteilt-lampe svg { display: block; width: 100%; height: auto; }
+.sr-geteilt-gehaeuse { fill: var(--canvas-alt); stroke: var(--line-strong); stroke-width: 2; }
+.sr-geteilt-licht { fill: var(--line-strong); transition: fill .08s; }
+.sr-geteilt-kern { fill: none; }
+.sr-geteilt-lampe[data-zustand="gruen"] .sr-geteilt-licht { fill: var(--sage); }
+.sr-geteilt-lampe[data-zustand="gruen"] .sr-geteilt-kern { fill: var(--kartenweiss); } /* zweites Merkmal, nicht nur Farbe */
+.sr-geteilt-lampe[data-zustand="blau"] .sr-geteilt-licht { fill: var(--blau); }
+.sr-geteilt-lampe[data-zustand="kupfer"] .sr-geteilt-licht { fill: var(--copper); }
+
+.sr-geteilt-zahl { font: 500 clamp(3.5em, 12vw, 6em)/1 var(--serif); min-height: 1.1em; min-width: 2ch; text-align: center; transition: opacity .08s; }
+.sr-geteilt-weg { opacity: 0; }
+
+/* ---------- Durchstreichen ---------- */
+.sr-durch-kopf { display: flex; align-items: center; justify-content: center; gap: 20px; }
+.sr-durch-vorlage {
+  display: grid; place-items: center; width: calc(var(--tippmin) * 1.2); height: calc(var(--tippmin) * 1.2);
+  border-radius: var(--radius-md); background: var(--copper-subtle); color: var(--copper-text);
+}
+.sr-durch-vorlage svg { width: 70%; height: 70%; }
+.sr-durch-raster { display: grid; gap: 6px; width: 100%; }
+.sr-durch-zeichen {
+  position: relative; display: grid; place-items: center; min-height: var(--tippmin); min-width: 0; padding: 6px;
+  background: transparent; border: 2px solid transparent; border-radius: var(--radius-md); color: var(--ink); cursor: pointer;
+}
+.sr-durch-zeichen svg { width: min(100%, 52px); height: auto; pointer-events: none; }
+.sr-durch-markiert { background: var(--sage-light); border-color: var(--sage); color: var(--sage); }
+.sr-durch-markiert::after { /* „durchgestrichen“ */
+  content: ""; position: absolute; left: 14%; right: 14%; top: 50%; height: 4px; border-radius: 2px;
+  background: var(--sage); transform: rotate(-35deg); pointer-events: none;
+}
+.sr-durch-nein { animation: sr-durch-nein .4s ease-out; }
+@keyframes sr-durch-nein { 0%, 100% { translate: 0; } 30% { translate: -4px; } 70% { translate: 4px; } }
+.sr-durch-uebersehen { border-color: var(--copper); border-style: dashed; background: var(--copper-subtle); }
+.sr-durch-gesperrt { pointer-events: none; }
+
+/* ---------- Blicksprung ---------- */
+.sr-blick-feld {
+  position: relative; width: 100%; height: min(62vh, 620px); min-height: 320px; overflow: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--highlight), var(--shadow-md);
+}
+.sr-blick-mitte {
+  position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; translate: -50% -50%;
+  border: 3px solid var(--line-strong); border-radius: 50%;
+}
+.sr-blick-ziel, .sr-blick-ablenk {
+  position: absolute; width: max(var(--tippmin), 84px); height: max(var(--tippmin), 84px); translate: -50% -50%;
+}
+.sr-blick-ziel {
+  padding: 0; background: transparent; border: 0; border-radius: 50%; cursor: pointer; color: var(--copper);
+  animation: sr-blick-auf .2s ease-out;
+}
+.sr-blick-ziel svg, .sr-blick-ablenk svg { display: block; width: 100%; height: 100%; }
+.sr-blick-ring { fill: var(--copper-subtle); stroke: var(--copper); stroke-width: 4; }
+.sr-blick-punkt { fill: var(--copper); }
+.sr-blick-ablenk { pointer-events: none; }
+.sr-blick-ablenk-form { fill: var(--canvas-alt); stroke: var(--blau); stroke-width: 4; }
+.sr-blick-weg svg { opacity: 0; transition: opacity .1s; } /* verschwunden, Stelle bleibt tippbar */
+.sr-blick-getroffen .sr-blick-ring { fill: var(--sage-light); stroke: var(--sage); }
+.sr-blick-getroffen .sr-blick-punkt { fill: var(--sage); }
+.sr-blick-zeigen { animation: sr-blick-puls .8s ease-in-out 2; }
+@keyframes sr-blick-auf { from { scale: .6; opacity: 0; } }
+@keyframes sr-blick-puls { 50% { scale: 1.2; } }
+
+/* ---------- Figuren vergleichen ---------- */
+.sr-figuren-vorlage {
+  width: min(46vw, 220px); aspect-ratio: 1; padding: 10px;
+  background: var(--copper-subtle); border-radius: var(--radius-lg);
+}
+.sr-figuren-vorlage svg, .sr-figuren-option svg { display: block; width: 100%; height: 100%; }
+.sr-figuren-zelle { fill: var(--copper); stroke: var(--card); stroke-width: 0.6; }
+.sr-figuren-auswahl { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; width: min(100%, 560px); }
+.sr-figuren-auswahl.sr-figuren-drei { grid-template-columns: repeat(3, 1fr); width: min(100%, 720px); }
+.sr-figuren-option {
+  aspect-ratio: 1; min-height: calc(var(--tippmin) * 1.6); padding: 10px; cursor: pointer;
+  background: var(--card); border: 2px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--highlight), var(--shadow-sm);
+}
+.sr-figuren-option:active { background: var(--canvas-alt); }
+.sr-figuren-option:disabled { cursor: default; }
+.sr-figuren-richtig { border-color: var(--sage); background: var(--sage-light); border-width: 4px; }
+.sr-figuren-gewaehlt { border-color: var(--copper); border-style: dashed; }
+
+@media (max-width: 560px) {
+  .sr-figuren-auswahl.sr-figuren-drei { grid-template-columns: repeat(2, 1fr); }
+  .sr-durch-raster { gap: 2px; }
+  .sr-durch-zeichen { padding: 2px; }
+}

@@ -1,0 +1,11 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "A · Klar & ruhig", "x": 0, "y": 0, "w": 1180, "h": 820 },
+    { "file": "DirectionB.dc.html", "title": "B · Warm & freundlich", "x": 1280, "y": 0, "w": 1180, "h": 820 },
+    { "file": "DirectionC.dc.html", "title": "C · Dunkel & kontrastreich", "x": 2560, "y": 0, "w": 1180, "h": 820 }
+  ],
+  "annotations": [
+    { "id": "richtungen", "x": 0, "y": -170, "w": 760, "text": "Kopf-Fit Startseite – drei Richtungen zur Auswahl (Tablet quer).\nA: Liste, eine ruhige Akzentfarbe, Schrift speziell für Sehschwäche.\nB: große farbige Kacheln, rund und freundlich, wenig Text.\nC: dunkler Hintergrund, sehr hoher Kontrast, Kartenspiele auf grünem Tisch." }
+  ],
+  "launch": { "view": "canvas" }
+}

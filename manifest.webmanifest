@@ -1,0 +1,14 @@
+{
+  "name": "Kopf-Fit – Gedächtnistraining",
+  "short_name": "Kopf-Fit",
+  "description": "Gedächtnis- und Konzentrationstraining mit Kartenspielen",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F9F7F4",
+  "theme_color": "#A9532D",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

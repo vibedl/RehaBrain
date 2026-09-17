@@ -1,0 +1,65 @@
+// Kleine UI-Helfer, ausgelegt auf Zittern (Tremor) und Einhand-Bedienung
+
+const DEBOUNCE_MS = 300;
+
+/**
+ * Tipp-/Klick-Handler: löst beim Loslassen aus (native click), ignoriert Mehrfach-Tipps
+ * innerhalb von 300 ms und funktioniert auch mit Enter/Leertaste.
+ */
+export function onTap(el, fn) {
+  el.addEventListener("click", debounced(fn));
+  return el;
+}
+
+/** Wie onTap, aber als Funktion – für el.onclick = debounced(...), wenn der Handler pro Runde wechselt */
+export function debounced(fn) {
+  // Sperre gilt je Handler (also je Knopf): Zittern auf DEMSELBEN Ziel wird geschluckt,
+  // ein schneller Tipp auf ein ANDERES Ziel (z. B. linke/rechte Fläche) zählt trotzdem.
+  let lastTap = -Infinity;
+  return (e) => {
+    const now = performance.now();
+    if (now - lastTap < DEBOUNCE_MS) return;
+    lastTap = now;
+    fn(e);
+  };
+}
+
+/** Element bauen: h("button.gross", { onTap, text }, kinder…) */
+export function h(tag, props = {}, ...children) {
+  const [name, ...classes] = tag.split(".");
+  const el = document.createElement(name || "div");
+  if (classes.length) el.className = classes.join(" ");
+  for (const [k, v] of Object.entries(props || {})) {
+    if (v == null || v === false) continue;
+    if (k === "onTap") onTap(el, v);
+    else if (k === "text") el.textContent = v;
+    else if (k === "html") el.innerHTML = v;
+    else if (k === "style" && typeof v === "object") Object.assign(el.style, v);
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2).toLowerCase(), v);
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of children.flat(Infinity)) {
+    if (c == null || c === false) continue;
+    el.append(c instanceof Node ? c : document.createTextNode(String(c)));
+  }
+  return el;
+}
+
+export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+export const rand = (n) => Math.floor(Math.random() * n);
+export const pick = (arr) => arr[rand(arr.length)];
+export function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = rand(i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/** Kurze, freundliche Rückmeldung einblenden (nie „Fehler!“ in Rot) */
+export function feedback(container, text, kind = "gut") {
+  const el = h("div.feedback." + kind, { text, role: "status" });
+  container.append(el);
+  setTimeout(() => el.remove(), 1100);
+}

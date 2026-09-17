@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;800&amp;display=swap">
+  <style>
+    body { margin: 0; font-family: "Figtree", "Segoe UI", Helvetica, sans-serif; background: #15181d; color: #f4f2ec; }
+    a { color: #ffd54a; } a:hover { color: #ffe68a; }
+    svg { display: block; }
+  </style>
+</helmet>
+<div style="width: 1180px; height: 820px; box-sizing: border-box; padding: 36px 48px; display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 36px; background: #15181d;">
+
+  <div style="display: flex; flex-direction: column; gap: 18px;">
+    <div style="font-size: 20px; color: #a9aeb6; font-weight: 500;">Kopf-Fit</div>
+    <div style="font-size: 46px; font-weight: 800; line-height: 1.05;">Hallo<br>Helga</div>
+    <div style="height: 2px; background: #2c313a; margin: 10px 0;"></div>
+    <div style="height: 84px; border-radius: 18px; background: #ffd54a; color: #15181d; display: flex; align-items: center; padding: 0 26px; gap: 16px; font-size: 26px; font-weight: 800;">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="#15181d"><path d="M7 4l13 8-13 8z"/></svg>Weitermachen
+    </div>
+    <div style="height: 72px; border-radius: 18px; background: #232830; display: flex; align-items: center; padding: 0 26px; gap: 16px; font-size: 22px;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f4f2ec" stroke-width="2.2" stroke-linecap="round"><path d="M4 19h16M6 15l4-5 3 3 5-7"/></svg>Mein Verlauf
+    </div>
+    <div style="height: 72px; border-radius: 18px; background: #232830; display: flex; align-items: center; padding: 0 26px; gap: 16px; font-size: 22px;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f4f2ec" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2.5" fill="#232830"/><circle cx="15" cy="17" r="2.5" fill="#232830"/></svg>Einstellungen
+    </div>
+    <div style="flex-grow: 1;"></div>
+    <div style="border-radius: 18px; border: 2px solid #3a404a; padding: 18px 22px; font-size: 20px; color: #cfd3d9;">Heute geht es mir nicht so gut</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-size: 18px; color: #a9aeb6; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;">Aufmerksamkeit &amp; Gedächtnis</div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+      <div style="height: 170px; border-radius: 20px; background: #2a5ea8; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 13V9M10 3h4"/></svg>
+        <div><div style="font-size: 24px; font-weight: 800;">Reaktion</div><div style="font-size: 17px; opacity: 0.8;">Stufe 3</div></div>
+      </div>
+      <div style="height: 170px; border-radius: 20px; background: #2a5ea8; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+        <div><div style="font-size: 24px; font-weight: 800;">Suchbild</div><div style="font-size: 17px; opacity: 0.8;">Stufe 2</div></div>
+      </div>
+      <div style="height: 170px; border-radius: 20px; background: #c2452d; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="font-size: 38px; font-weight: 800; line-height: 1;">1 2 3</div>
+        <div><div style="font-size: 24px; font-weight: 800;">Zahlen merken</div><div style="font-size: 17px; opacity: 0.8;">Stufe 4</div></div>
+      </div>
+      <div style="height: 170px; border-radius: 20px; background: #c2452d; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#fff"/></svg>
+        <div><div style="font-size: 24px; font-weight: 800;">Wege merken</div><div style="font-size: 17px; opacity: 0.8;">Stufe 1</div></div>
+      </div>
+    </div>
+
+    <div style="font-size: 18px; color: #a9aeb6; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 12px;">Kartenspiele</div>
+    <div style="border-radius: 24px; background: #1d5a45; padding: 22px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; flex-grow: 1;">
+      <div style="border-radius: 16px; background: #fbf8f1; color: #15181d; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="font-size: 44px; font-weight: 800; color: #c2452d; line-height: 1;">♥</div>
+        <div><div style="font-size: 22px; font-weight: 800;">Karten sortieren</div><div style="font-size: 16px; color: #555;">Stufe 5</div></div>
+      </div>
+      <div style="border-radius: 16px; background: #fbf8f1; color: #15181d; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="font-size: 44px; font-weight: 800; line-height: 1;">♠ ♠</div>
+        <div><div style="font-size: 22px; font-weight: 800;">Paare finden</div><div style="font-size: 16px; color: #555;">Stufe 2</div></div>
+      </div>
+      <div style="border-radius: 16px; background: #fbf8f1; color: #15181d; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="font-size: 44px; font-weight: 800; color: #2a5ea8; line-height: 1;">7 · A</div>
+        <div><div style="font-size: 22px; font-weight: 800;">Höher oder tiefer</div><div style="font-size: 16px; color: #555;">Stufe 1</div></div>
+      </div>
+      <div style="border-radius: 16px; background: #fbf8f1; color: #15181d; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="font-size: 44px; font-weight: 800; color: #1d5a45; line-height: 1;">K K</div>
+        <div><div style="font-size: 22px; font-weight: 800;">Schnipp-Schnapp</div><div style="font-size: 16px; color: #555;">Stufe 1</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

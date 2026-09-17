@@ -1,0 +1,130 @@
+/* ==========================================================================
+   Planen & Denken – Einkaufen, Turm, Regeln wechseln, Abläufe ordnen
+   Nur Klassen mit Präfix pl-einkauf-, pl-turm-, pl-regeln-, pl-ablauf-
+   ========================================================================== */
+
+/* ---------- Einkaufen ---------- */
+.pl-einkauf-oben { display: flex; flex-wrap: wrap; gap: 16px; width: min(100%, 860px); justify-content: center; }
+.pl-einkauf-geld {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  min-width: 180px; padding: 14px 24px; border-radius: var(--radius-lg);
+  background: var(--card); border: 2px solid var(--sage); box-shadow: var(--shadow-md); color: var(--muted); font-weight: 600;
+}
+.pl-einkauf-geld strong { font: 500 1.8em var(--serif); color: var(--ink); }
+.pl-einkauf-zettelbox, .pl-einkauf-korb {
+  flex: 1; min-width: 240px; padding: 14px 20px; border-radius: var(--radius-lg);
+  background: var(--card); border: 1px solid var(--line-strong); box-shadow: var(--shadow-md);
+}
+.pl-einkauf-korb { width: min(100%, 860px); flex: none; }
+.pl-einkauf-titel { display: block; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.pl-einkauf-zettel { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 1.1em; }
+.pl-einkauf-zettel li::before {
+  content: ""; display: inline-block; width: .8em; height: .8em; margin-right: .45em; vertical-align: -.05em;
+  border: 2px solid var(--line-strong); border-radius: 4px;
+}
+.pl-einkauf-zettel li.erledigt { color: var(--muted); text-decoration: line-through; }
+.pl-einkauf-zettel li.erledigt::before { background: var(--sage); border-color: var(--sage); }
+
+.pl-einkauf-regal { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; width: min(100%, 860px); }
+.pl-einkauf-artikel {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: calc(var(--tippmin) * 1.9);
+  padding: 10px 8px; font: inherit; color: var(--ink); cursor: pointer;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--highlight), var(--shadow-sm);
+}
+.pl-einkauf-artikel:active { transform: scale(.98); }
+.pl-einkauf-artikel.im-korb { background: var(--sage-light); border-color: var(--sage); }
+.pl-einkauf-bild svg { width: 64px; height: 64px; color: var(--ink); }
+.pl-einkauf-name { font-weight: 600; }
+.pl-einkauf-variante { font-size: .85em; color: var(--muted); }
+.pl-einkauf-preis { font: 500 1.15em var(--serif); color: var(--copper-text); }
+
+.pl-einkauf-korbliste { display: flex; flex-wrap: wrap; gap: 10px; }
+.pl-einkauf-korbteil {
+  display: flex; align-items: center; gap: 10px; min-height: var(--tippmin); padding: 6px 16px 6px 8px;
+  font: inherit; color: var(--ink); cursor: pointer;
+  background: var(--canvas-alt); border: 1px solid var(--line-strong); border-radius: var(--radius-md);
+}
+.pl-einkauf-korbteil svg { width: 40px; height: 40px; }
+.pl-einkauf-zurueck { font-size: .8em; color: var(--muted); text-decoration: underline; }
+.pl-einkauf-leer { color: var(--muted); }
+.pl-einkauf-summe { margin: 12px 0 0; font-weight: 700; text-align: right; }
+.pl-einkauf-gesperrt { pointer-events: none; opacity: .75; }
+
+/* ---------- Turm ---------- */
+.pl-turm-zielbox { display: flex; align-items: center; gap: 14px; color: var(--muted); font-weight: 600; }
+.pl-turm-zielbild {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 190px; height: 86px; padding: 8px;
+  background: var(--card); border: 2px dashed var(--line-strong); border-radius: var(--radius-md);
+}
+.pl-turm-feld { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: min(100%, 760px); }
+.pl-turm-stab {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+  min-height: max(260px, calc(var(--tippmin) * 3.6)); padding: 12px 8px 14px; font: inherit; cursor: pointer;
+  background: var(--card); border: 2px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--highlight), var(--shadow-md);
+}
+.pl-turm-stab.klein { min-height: 0; padding: 0 2px 2px; border: 0; border-bottom: 2px solid var(--line-strong); border-radius: 0; background: none; box-shadow: none; cursor: default; }
+.pl-turm-stab.gewaehlt { border-color: var(--copper); background: var(--copper-subtle); }
+.pl-turm-stange {
+  position: absolute; left: 50%; bottom: 14px; top: 28px; width: 8px; transform: translateX(-50%);
+  background: var(--line-strong); border-radius: 4px;
+}
+.pl-turm-stab.klein .pl-turm-stange { top: 4px; bottom: 2px; width: 3px; }
+.pl-turm-stapel { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; }
+.pl-turm-stab.klein .pl-turm-stapel { gap: 2px; }
+.pl-turm-scheibe { height: 30px; border-radius: 999px; box-shadow: var(--shadow-sm); transition: transform .15s; }
+.pl-turm-stab.klein .pl-turm-scheibe { height: 11px; }
+.pl-turm-scheibe.angehoben { transform: translateY(-22px); outline: 3px solid var(--ink); outline-offset: 2px; }
+.pl-turm-farbe0 { background: var(--copper); }
+.pl-turm-farbe1 { background: var(--sage); }
+.pl-turm-farbe2 { background: var(--blau); }
+.pl-turm-farbe3 { background: var(--ink); }
+.pl-turm-farbe4 { background: var(--muted); }
+.pl-turm-zaehler { margin: 0; font: 500 1.4em var(--serif); }
+.pl-turm-gesperrt { pointer-events: none; }
+
+/* ---------- Regeln wechseln ---------- */
+.pl-regeln-regel { min-height: 1.4em; }
+.pl-regeln-vorlagen { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+.pl-regeln-karte {
+  --pl-regeln-f0: #C2673F; --pl-regeln-f1: #4E7057; --pl-regeln-f2: #3F6390; --pl-regeln-f3: #1C1917;
+  display: grid; place-items: center; width: clamp(96px, 20vw, 150px); aspect-ratio: 5 / 7; padding: 6px;
+  background: var(--kartenweiss); border: 2px solid var(--line-strong); border-radius: var(--radius-md); box-shadow: var(--shadow-md);
+}
+.pl-regeln-karte svg { width: 100%; height: 100%; }
+button.pl-regeln-karte { cursor: pointer; min-width: var(--tippmin); }
+button.pl-regeln-karte:active { transform: scale(.97); }
+.pl-regeln-karte.pl-regeln-treffer { border-color: var(--sage); box-shadow: 0 0 0 6px var(--sage-light); }
+.pl-regeln-karte.pl-regeln-daneben { border-color: var(--copper); box-shadow: 0 0 0 6px var(--copper-subtle); }
+.pl-regeln-aktuell { width: clamp(120px, 26vw, 180px); border-color: var(--ink); }
+.pl-regeln-pfeil svg { width: 40px; height: 40px; color: var(--muted); }
+.pl-regeln-rueck { margin: 0; min-height: 1.5em; font-weight: 700; font-size: 1.2em; color: var(--muted); }
+
+/* ---------- Abläufe ordnen ---------- */
+.pl-ablauf-folge { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; width: min(100%, 640px); }
+.pl-ablauf-platz {
+  display: flex; align-items: center; gap: 14px; width: 100%; min-height: var(--tippmin); padding: 8px 16px 8px 8px;
+  font: inherit; text-align: left; color: var(--ink);
+  background: var(--canvas-alt); border: 2px dashed var(--line-strong); border-radius: var(--radius-md);
+}
+.pl-ablauf-platz.belegt { cursor: pointer; background: var(--card); border: 1px solid var(--sage); box-shadow: var(--shadow-sm); }
+.pl-ablauf-platz.passt { background: var(--sage-light); border: 1px solid var(--sage); }
+.pl-ablauf-platz.loesung { background: var(--card); border: 1px solid var(--copper); }
+.pl-ablauf-nr {
+  display: grid; place-items: center; flex: none; width: 2.1em; height: 2.1em; border-radius: 50%;
+  background: var(--card); border: 1px solid var(--line-strong); font: 500 1.05em var(--serif);
+}
+.pl-ablauf-leer { color: var(--muted); }
+.pl-ablauf-titel { margin: 6px 0 0; color: var(--muted); font-weight: 700; }
+.pl-ablauf-vorrat { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: min(100%, 860px); }
+.pl-ablauf-schritt {
+  min-height: var(--tippmin); padding: 10px 20px; font: inherit; color: var(--ink); cursor: pointer; max-width: 100%;
+  background: var(--card); border: 1px solid var(--line-strong); border-radius: var(--radius-md); box-shadow: var(--highlight), var(--shadow-sm);
+}
+.pl-ablauf-schritt:active { transform: scale(.98); background: var(--copper-subtle); }
+.pl-ablauf-gesperrt { pointer-events: none; }
+
+@media (max-width: 560px) {
+  .pl-turm-feld { gap: 8px; }
+  .pl-turm-scheibe { height: 24px; }
+  .pl-einkauf-regal { grid-template-columns: repeat(2, 1fr); }
+}

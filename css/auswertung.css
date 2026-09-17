@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Auswertung – Einstufung (Bericht-CSS steckt inline im erzeugten Dokument)
+   Nur Klassen mit Präfix aw-
+   ========================================================================== */
+.aw-einstufung .aw-links { text-align: left; max-width: none; margin-inline: 0; }
+
+.aw-bereiche, .aw-ergebnis { list-style: none; margin: 18px 0; padding: 0; display: grid; gap: 12px; }
+.aw-bereiche li, .aw-ergebnis li {
+  display: flex; align-items: center; gap: 18px; min-height: var(--tippmin); padding: 12px 20px;
+  background: var(--card); border: 1px solid var(--line); border-left: 6px solid var(--akzent, var(--copper));
+  border-radius: var(--radius-md); box-shadow: var(--highlight), var(--shadow-md);
+}
+.aw-bereiche li > span:last-child, .aw-ergebnis li > span:last-child { display: flex; flex-direction: column; gap: 2px; }
+.aw-bereiche small, .aw-ergebnis small { color: var(--muted); font-size: 1em; }
+.aw-icon { display: grid; place-items: center; width: 52px; height: 52px; flex: none; color: var(--akzent, var(--copper)); }
+.aw-icon .ico, .aw-icon svg { width: 40px; height: 40px; }
+
+.aw-stufe {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; flex: none;
+  min-width: 84px; font: 500 2.2em/1 var(--serif); color: var(--akzent, var(--copper-text));
+}
+.aw-stufe small { font: 700 .3em var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+
+.aw-schritte { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin: 4px 0 18px; padding: 0; color: var(--muted); font-size: 1em; }
+.aw-schritte li { display: flex; align-items: center; gap: 8px; }
+.aw-punkt { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line-strong); }
+.aw-schritte .aw-fertig .aw-punkt { background: var(--sage); border-color: var(--sage); }
+.aw-schritte .aw-jetzt { color: var(--ink); font-weight: 700; }
+.aw-schritte .aw-jetzt .aw-punkt { border-color: var(--copper); background: var(--copper-subtle); }
+
+.aw-vorsatz { font-weight: 600; color: var(--sage); font-size: 1.1em; margin: 8px 0 0; }
+.aw-spaeter { margin-top: 4px; }
