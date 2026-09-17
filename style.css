@@ -24,6 +24,8 @@
   --blau: #3F6390;
   --pflaume: #7A4E6E;
   --ocker: #9A7420;
+  --petrol: #2F6F6A;
+  --schiefer: #5A5F6B;
   --on-accent: #FFF9F2;
   --feature: #161514;
   --feature-card: #201E1C;
@@ -52,7 +54,7 @@
   --line: rgba(243, 239, 234, 0.09); --line-strong: rgba(243, 239, 234, 0.18);
   --copper: #D47C52; --copper-dark: #C2673F; --copper-hover: #D47C52; --copper-text: #E0A97F;
   --copper-subtle: rgba(224, 169, 127, 0.12);
-  --sage: #8DB598; --sage-light: rgba(141, 181, 152, 0.14); --blau: #8EAFD6; --pflaume: #C79ABB; --ocker: #D6B25E;
+  --sage: #8DB598; --sage-light: rgba(141, 181, 152, 0.14); --blau: #8EAFD6; --pflaume: #C79ABB; --ocker: #D6B25E; --petrol: #7CC0B8; --schiefer: #A9AFBC;
   --feature: #2A2623; --feature-card: #36302C; --kartenweiss: #F6F1E9;
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2); --shadow-md: 0 10px 24px -6px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.5); --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -66,7 +68,7 @@
     --line: rgba(243, 239, 234, 0.09); --line-strong: rgba(243, 239, 234, 0.18);
     --copper: #D47C52; --copper-dark: #C2673F; --copper-hover: #D47C52; --copper-text: #E0A97F;
     --copper-subtle: rgba(224, 169, 127, 0.12);
-    --sage: #8DB598; --sage-light: rgba(141, 181, 152, 0.14); --blau: #8EAFD6; --pflaume: #C79ABB; --ocker: #D6B25E;
+    --sage: #8DB598; --sage-light: rgba(141, 181, 152, 0.14); --blau: #8EAFD6; --pflaume: #C79ABB; --ocker: #D6B25E; --petrol: #7CC0B8; --schiefer: #A9AFBC;
     --feature: #2A2623; --feature-card: #36302C; --kartenweiss: #F6F1E9;
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2); --shadow-md: 0 10px 24px -6px rgba(0, 0, 0, 0.35);
     --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.5); --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -213,7 +215,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.015
 .zeile-uebung .name { flex-grow: 1; font-weight: 600; }
 .zeile-uebung .stufe { color: var(--muted); font-size: .82em; white-space: nowrap; }
 .zeile-uebung > .ico { color: var(--muted); width: .9em; height: .9em; }
-.a-blau { --akzent: var(--blau); } .a-pflaume { --akzent: var(--pflaume); } .a-ocker { --akzent: var(--ocker); } .a-sage { --akzent: var(--sage); } .a-copper { --akzent: var(--copper); }
+.a-blau { --akzent: var(--blau); } .a-pflaume { --akzent: var(--pflaume); } .a-ocker { --akzent: var(--ocker); } .a-petrol { --akzent: var(--petrol); } .a-schiefer { --akzent: var(--schiefer); } .a-sage { --akzent: var(--sage); } .a-copper { --akzent: var(--copper); }
 
 /* ---------- Anleitung / Ergebnis ---------- */
 .symbol-gross {

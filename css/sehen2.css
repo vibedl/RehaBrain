@@ -1,0 +1,120 @@
+/* Kopf-Fit – Sehen & Raum, zweiter Teil: Sehabstand-Kalibrierung, Randsicht, Szenen erkunden.
+   Präfixe: sv-kal- (core/sehabstand.js), sv-rand- (modules/randsicht.js), sv-such- (modules/suchen.js) */
+
+/* ================= Kalibrierung (sv-kal-) ================= */
+.sv-kal-text-block { max-width: 60ch; text-align: center; color: var(--muted); }
+.sv-kal-kartenplatz { display: flex; justify-content: center; padding: 12px 0; }
+.sv-kal-kartenrahmen {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  padding: 10px; background: var(--canvas-alt); border-radius: var(--radius-lg);
+}
+.sv-kal-kartenrahmen svg { display: block; width: 100%; height: 100%; }
+.sv-kal-karte { fill: var(--card); stroke: var(--ink); stroke-width: 6; }
+.sv-kal-chip { fill: var(--copper-light); stroke: var(--copper-dark); stroke-width: 3; }
+.sv-kal-linie { stroke: var(--line-strong); stroke-width: 10; stroke-linecap: round; fill: none; }
+.sv-kal-reihe { justify-content: center; flex-wrap: wrap; }
+.sv-kal-plusminus { min-width: calc(var(--tippmin) * 1.3); font-weight: 700; }
+.sv-kal-abstaende { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; width: 100%; max-width: 720px; }
+.sv-kal-abstand {
+  display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 10px;
+  background: var(--card); border: 2px solid var(--line); border-radius: var(--radius-lg);
+  box-shadow: var(--highlight), var(--shadow-sm); cursor: pointer; color: var(--ink); font: inherit;
+}
+.sv-kal-abstand:active { background: var(--canvas-alt); }
+.sv-kal-vorwahl { border-color: var(--copper); border-width: 3px; }
+.sv-kal-abstand span { font-weight: 700; }
+.sv-kal-bild { width: 100%; max-width: 280px; }
+.sv-kal-geraet { fill: var(--canvas-subtle); stroke: var(--line-strong); stroke-width: 2; }
+.sv-kal-kopf { fill: var(--copper-subtle); stroke: var(--copper-text); stroke-width: 3; }
+.sv-kal-strich { stroke: var(--ink-secondary); stroke-width: 3; stroke-linecap: round; fill: none; }
+.sv-kal-pfeil { stroke: var(--copper-text); stroke-width: 3; stroke-linecap: round; fill: none; }
+.sv-kal-text { font: 700 14px var(--sans); fill: var(--ink); }
+
+/* ================= Randsicht (sv-rand-) ================= */
+.sv-rand-text { max-width: 60ch; text-align: center; }
+.sv-rand-feld {
+  position: relative; width: 100%; height: min(64vh, 640px); min-height: 340px; overflow: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--highlight), var(--shadow-md);
+}
+.sv-rand-fix {
+  position: absolute; left: 50%; top: 50%; width: 26px; height: 26px; translate: -50% -50%;
+  border: 4px solid var(--ink); border-radius: 50%; transition: border-radius .1s;
+}
+.sv-rand-fix-anders { border-radius: 4px; border-color: var(--copper); }
+.sv-rand-reiz {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%; border-radius: 50%;
+  background: var(--copper-light); box-shadow: 0 0 16px 4px var(--copper-light);
+  opacity: 0; transition: opacity .05s linear; pointer-events: none;
+}
+.sv-rand-ring {
+  position: absolute; width: 46px; height: 46px; translate: -50% -50%; border-radius: 50%;
+  border: 3px dashed var(--muted); opacity: 0; pointer-events: none; transition: opacity .15s;
+}
+.sv-rand-ring-an { opacity: 1; animation: sv-rand-ring-puls 1.3s ease-in-out infinite; }
+@keyframes sv-rand-ring-puls { 50% { scale: 1.15; } }
+.sv-rand-antworten { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; width: 100%; }
+.sv-rand-gesehen { min-width: 260px; }
+.sv-rand-mitte { min-width: 200px; }
+.sv-rand-gedrueckt { transform: scale(.94); background: var(--sage-light); border-color: var(--sage); }
+.sv-rand-ergebnis { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; justify-content: center; width: 100%; }
+.sv-rand-skizze-platz { flex: 0 0 auto; width: min(100%, 340px); }
+.sv-rand-skizze-platz svg { display: block; width: 100%; height: auto; }
+.sv-rand-legende { flex: 1 1 260px; min-width: 240px; }
+.sv-rand-legende p { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: .95em; color: var(--muted); }
+.sv-rand-legende i { display: inline-block; width: 18px; height: 12px; border-radius: 3px; }
+.sv-rand-lg-gesehen { background: var(--sage); }
+.sv-rand-lg-unsicher { background: var(--copper-subtle); border: 1px solid var(--copper); }
+.sv-rand-liste { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 4px; font-size: .95em; }
+.sv-rand-liste li { padding: 4px 0; border-top: 1px solid var(--line); }
+.sv-rand-sk-kreis { fill: none; stroke: var(--line-strong); stroke-width: 2; }
+.sv-rand-sk-hilfs { fill: none; stroke: var(--line); stroke-width: 1; }
+.sv-rand-sk-unsicher { fill: var(--copper-subtle); stroke: var(--copper); stroke-width: 1; }
+.sv-rand-sk-gesehen { fill: var(--sage); opacity: .85; }
+.sv-rand-sk-text { font: 600 12px var(--sans); fill: var(--ink-secondary); }
+.sv-rand-sk-mitte { fill: var(--ink); }
+
+/* ================= Szenen erkunden (sv-such-) ================= */
+.sv-such-aufgabe { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.sv-such-vorlage { display: grid; place-items: center; width: 96px; height: 96px; color: var(--copper-text); }
+.sv-such-vorlage.klein { width: 56px; height: 56px; }
+.sv-such-vorlage svg, .sv-such-vorlage svg { display: block; width: 100%; height: 100%; }
+.sv-such-kopf { display: flex; align-items: center; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.sv-such-rahmen {
+  width: 100%; max-width: 960px; border-radius: var(--radius-lg); overflow: hidden;
+  border: 1px solid var(--line); box-shadow: var(--highlight), var(--shadow-md); background: var(--card);
+}
+.sv-such-bild { display: block; width: 100%; height: auto; }
+.sv-such-gesperrt { pointer-events: none; }
+.sv-such-hg { color: var(--ink); }
+.sv-bg-wand { fill: var(--canvas-alt); }
+.sv-bg-boden { fill: var(--canvas-subtle); }
+.sv-bg-holz { fill: var(--copper-subtle); }
+.sv-bg-moebel { fill: var(--canvas-subtle); stroke: var(--line-strong); stroke-width: 2; }
+.sv-bg-himmel { fill: var(--sage-light); stroke: var(--line-strong); stroke-width: 2; }
+.sv-bg-strasse { fill: var(--canvas-subtle); }
+.sv-bg-fliese { stroke: var(--line); stroke-width: 1; }
+.sv-bg-strich { stroke: var(--line-strong); stroke-width: 3; fill: none; stroke-linecap: round; }
+.sv-bg-dick { stroke: var(--line-strong); stroke-width: 5; fill: none; stroke-linecap: round; }
+.sv-bg-markierung { stroke: var(--card); stroke-width: 6; }
+.sv-such-obj { cursor: pointer; fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.sv-such-obj .sv-o-offen { opacity: .8; }
+.sv-such-obj .sv-o-glas { fill: var(--card); fill-opacity: .3; }
+.sv-such-obj .sv-o-voll { fill: currentColor; stroke: none; }
+.sv-such-treffflaeche { fill: transparent; stroke: none; }
+.sv-f0 { color: var(--copper-text); } .sv-f1 { color: var(--sage); } .sv-f2 { color: var(--blau); }
+.sv-f3 { color: var(--pflaume); } .sv-f4 { color: var(--ocker); }
+.sv-such-nein { animation: sv-such-nein .4s ease-out; }
+@keyframes sv-such-nein { 0%, 100% { translate: 0; } 30% { translate: -6px; } 70% { translate: 6px; } }
+.sv-such-markierungen circle { fill: none; stroke-width: 4; }
+.sv-such-gefunden { fill: none; stroke: var(--sage) !important; }
+.sv-such-uebersehen { fill: none; stroke: var(--copper) !important; stroke-dasharray: 6 5; }
+.sv-such-linien { pointer-events: none; }
+.sv-such-linie path { stroke: var(--copper); stroke-width: 3; fill: none; opacity: 0; stroke-dasharray: 100; stroke-dashoffset: 100; animation: sv-such-linie 1s ease-out forwards; }
+.sv-such-rueck { stroke: var(--copper); stroke-width: 2; stroke-dasharray: 4 4; fill: none; opacity: 0; animation: sv-such-linie .9s ease-out forwards; }
+@keyframes sv-such-linie { 0% { opacity: 0; stroke-dashoffset: 100; } 15% { opacity: .8; } 100% { opacity: 0; stroke-dashoffset: 0; } }
+
+@media (max-width: 560px) {
+  .sv-rand-antworten { flex-direction: column; width: 100%; }
+  .sv-rand-gesehen, .sv-rand-mitte { width: 100%; }
+  .sv-such-vorlage { width: 72px; height: 72px; }
+}

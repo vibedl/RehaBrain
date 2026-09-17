@@ -1,0 +1,32 @@
+/* Kopf-Fit – Leistungsprofil. Präfix: lp- (core/leistungsprofil.js) */
+
+.lp-hinweis { max-width: 62ch; }
+.lp-radar-platz { display: flex; justify-content: center; padding: 8px 0 20px; }
+.lp-radar { width: min(100%, 420px); height: auto; }
+.lp-radar-ring { fill: none; stroke: var(--line); stroke-width: 1; }
+.lp-radar-achse { stroke: var(--line-strong); stroke-width: 1; }
+.lp-radar-flaeche { fill: var(--copper-subtle); stroke: var(--copper); stroke-width: 2.5; stroke-linejoin: round; }
+.lp-radar-punkt { fill: var(--copper-dark); stroke: var(--card); stroke-width: 2; }
+.lp-radar-text { font: 600 11px var(--sans); fill: var(--ink-secondary); }
+
+.lp-karten { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 8px; }
+.lp-karte {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  padding: 16px 18px; box-shadow: var(--highlight), var(--shadow-sm);
+}
+.lp-karte.lp-staerke { border-color: var(--sage); }
+.lp-karte.lp-uebungsfeld { border-color: var(--copper); }
+.lp-karte-kopf { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.lp-karte-name { font-family: var(--serif); font-size: 1.15em; font-weight: 500; }
+.lp-karte-stufe { color: var(--muted); font-weight: 700; white-space: nowrap; }
+.lp-karte-marken { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+.lp-marke { font-size: .78em; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--canvas-alt); color: var(--muted); }
+.lp-trend-steigend { background: var(--sage-light); color: var(--sage); }
+.lp-trend-fallend { background: var(--copper-subtle); color: var(--copper-text); }
+.lp-marke-staerke { background: var(--sage-light); color: var(--sage); }
+.lp-marke-feld { background: var(--copper-subtle); color: var(--copper-text); }
+.lp-karte-text { color: var(--ink-secondary); margin: 4px 0 0; line-height: 1.5; }
+
+@media (max-width: 560px) {
+  .lp-karten { grid-template-columns: 1fr; }
+}

@@ -6,7 +6,7 @@ Gedächtnis- und Konzentrationstraining mit Kartenspielen für Menschen nach ein
 
 **Online:** https://vibedl.github.io/RehaBrain/ · **Code:** https://github.com/vibedl/RehaBrain
 
-## Stand (17.09.2026): 26 Übungen in 5 Bereichen, alle Etappen des Plans umgesetzt
+## Stand (17.09.2026): 43 Übungen in 7 Bereichen – mindestens so umfangreich wie RehaCom, ohne Kopie
 - **Grundgerüst:**
   - Profile, Einstellungen (Darstellung hell/dunkel/automatisch, Schriftgröße, Kartenblatt, Vorlesen, Kontrast, weniger Bewegung), Verlauf, Sicherung als Datei
   - Stufen 1–20 passen sich automatisch an; an einem „schlechten Tag“ wird nicht herabgestuft
@@ -20,7 +20,14 @@ Gedächtnis- und Konzentrationstraining mit Kartenspielen für Menschen nach ein
 - **Planen & Denken:** Einkaufen, Turm umschichten, Regeln wechseln, Abläufe ordnen
 - **Sehen & Raum:** Durchstreichen (mit Auswertung links/rechts), Blicksprung, Figuren vergleichen
 - **Kartenspiele (Leiter):** Karten sortieren, Paare finden, Höher oder tiefer, Schnipp-Schnapp, Mau-Mau, Patience (Klondike/Freecell, nur lösbare Spiele), Rommé, 17 und 4, Sechsundsechzig, Skat-Schule, Skat (gegen 2 Computer, mit Ramsch & Bock). Französisches oder deutsches Blatt (Patience immer französisch, 52 Karten).
-- **Noch offen:** Test mit echten Nutzer:innen (Spieldauer, Score-Gewichtung, Computer-Stärke bei Rommé/Skat), Handy-Layout der Kartenspiele, Veröffentlichung (z. B. GitHub Pages)
+- **Visuomotorik (neu):** Ziele antippen, Wege nachfahren (auch gegen Mikrographie bei Parkinson), Punkte verbinden, Im Takt tippen, Sortieren mit Ziel – trainieren Hand-Auge-Koordination, per Finger/Stift/Maus.
+- **Beruf & Alltag (neu):** Post bearbeiten, Daten übertragen, Tag planen, Telefonnotiz, Bestellung prüfen – komplexe Alltags- und Büroaufgaben, vor allem für die Rückkehr in Beruf und selbstständigen Haushalt.
+- **Sehen & Raum, erweitert:** zusätzlich Randsicht-Training (mit Kalibrierung per Bankkarte, ohne Kamera) und Szenen erkunden.
+- **Aufmerksamkeit & Gedächtnis, erweitert:** zusätzlich Wachsam bleiben (5–20 Min. Daueraufmerksamkeit), Schnell bereit, Blick wechseln, Wörter hören, Kurze Geschichten.
+- **Mein Leistungsprofil:** Netzdiagramm über alle Bereiche mit Trend und Tagesform – Vergleich nur mit sich selbst, kein Test, keine Diagnose.
+- **Für Therapeutin:** eigener PIN-geschützter Bereich – Therapiepläne erstellen (Übungsauswahl, Stufen, Sitzungsdauer, Pausenhinweise, Wochentage), als Datei, Link oder QR-Code teilen (ohne Server, ohne Gesundheitsdaten im Link), Ergebnisse exportieren.
+- **Bedienung:** Scanning-Modus für Schalter-Bedienung, einstellbare Tipp-Verzögerung gegen Zittern, Muster zusätzlich zu Farben für Farbenblindheit.
+- **Bewusst nicht nachgebaut:** Medizinprodukt-Zulassung, klinische Normwerte/Screenings, Abrechnung über die Krankenkasse – das bräuchte eine Zulassung, die eine kostenlose App nicht hat.
 
 ## Lokal starten
 Aus diesem Ordner heraus:

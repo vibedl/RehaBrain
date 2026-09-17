@@ -2,6 +2,7 @@
 // Erzeugt ein eigenes Dokument (neues Fenster, sonst verstecktes iframe) und ruft window.print() auf.
 // Keine Bibliotheken; Diagramme als Inline-SVG, schwarz-weiß-tauglich.
 import { MAX_LEVEL } from "./profile.js";
+import { profilAbschnittHTML } from "./leistungsprofil.js";
 
 // ---------- Reine Logik (ohne DOM, in Node testbar) ----------
 
@@ -167,7 +168,7 @@ export function diagrammSVG(bereich, raum, schwereTage) {
   return s + `</svg>`;
 }
 
-export function berichtHTML(daten) {
+export function berichtHTML(daten, profilAbschnitt = "") {
   const raum = { von: daten.von, bis: daten.bis };
   const tabelleZeilen = daten.uebungen.map((u) => `<tr><td>${esc(u.titel)}<small>${esc(u.bereich)}</small></td><td class="z">${u.anzahl}</td><td class="z">${u.anfang}</td><td class="z"><strong>${u.aktuell}</strong></td><td class="z">${vorzeichen(u.veraenderung)}</td></tr>`).join("");
   const bereichBloecke = daten.bereiche.map((b) => {
@@ -259,6 +260,7 @@ ${daten.uebungen.length ? `<table><thead><tr><th>Übung</th><th class="z">Runden
 </section>
 ${seiten}
 ${einst}
+${profilAbschnitt}
 <section class="block"><h2>Notizen der Therapeutin / des Therapeuten</h2><div class="notizen"></div></section>
 <p class="hinweis">Kopf-Fit ist ein Training für zu Hause und kein Medizinprodukt. Die Angaben ersetzen keine ärztliche oder therapeutische Diagnostik; sie zeigen nur, wie das Training verlaufen ist.</p>
 </div></body></html>`;
@@ -288,11 +290,12 @@ export function oeffneBericht(profil, module, bereiche, { art = "4w", autoDruck 
   }
   const ergebnis = { art, fenster, iframe, dokument: null };
 
+  const profilAbschnitt = profilAbschnittHTML(profil, module, bereiche);
   const zeichne = (a) => {
     ergebnis.art = a;
     const doc = fenster.document;
     doc.open();
-    doc.write(berichtHTML(berichtDaten(profil, module, bereiche, a)));
+    doc.write(berichtHTML(berichtDaten(profil, module, bereiche, a), profilAbschnitt));
     doc.close();
     ergebnis.dokument = doc;
     doc.querySelectorAll("[data-zeitraum]").forEach((b) => b.addEventListener("click", () => zeichne(b.dataset.zeitraum)));

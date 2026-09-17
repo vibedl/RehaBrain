@@ -1,0 +1,91 @@
+/* Kopf-Fit – Bereich „Visuomotorik“ (Hand-Auge-Koordination)
+   Module: zielen (vm-ziel-, teilt sich vm-rahmen/vm-flaeche), nachfahren (vm-zeichnen),
+   verbinden (vm-verb-), rhythmus (vm-rhy-), greifen (vm-greif-).
+   Präfix je Modul, gemeinsame Rahmen/Zeichenflächen-Klassen: vm-rahmen, vm-flaeche. */
+
+/* ---------- Gemeinsamer Rahmen für Zeichenflächen (zielen, nachfahren, verbinden) ---------- */
+.vm-rahmen {
+  position: relative; width: 100%; max-width: 720px; aspect-ratio: 4 / 3;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  box-shadow: var(--highlight), var(--shadow-md); overflow: hidden;
+}
+.vm-flaeche, .vm-verb {
+  display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair;
+}
+.vm-zeichnen { cursor: pointer; }
+
+/* ---------- Punkte verbinden ---------- */
+.vm-verb-punkt circle {
+  fill: var(--card); stroke: var(--line-strong); stroke-width: 2.5; transition: fill .12s, stroke .12s;
+}
+.vm-verb-punkt text {
+  fill: var(--ink); font: 700 clamp(1em, 4vw, 1.5em) var(--sans); pointer-events: none; user-select: none;
+}
+.vm-verb-punkt.vm-verb-tipp circle { stroke: var(--copper); stroke-width: 4; animation: vm-verb-puls 1s ease-in-out infinite; }
+.vm-verb-punkt.vm-verb-fertig circle { fill: var(--sage-light); stroke: var(--sage); }
+.vm-verb-linien line { stroke: var(--sage); stroke-width: 4; stroke-linecap: round; }
+.vm-verb-gummi { stroke: var(--copper); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 8; pointer-events: none; }
+@keyframes vm-verb-puls {
+  0%, 100% { stroke-width: 4; } 50% { stroke-width: 7; }
+}
+
+/* ---------- Wege nachfahren ---------- */
+.vm-rahmen:has(.vm-zeichnen) { max-width: 620px; }
+
+/* ---------- Ziele antippen ---------- */
+.vm-rahmen:has(canvas.vm-flaeche:not(.vm-zeichnen)) { max-width: 640px; }
+
+/* ---------- Im Takt tippen ---------- */
+.vm-rhy-puls {
+  display: grid; place-items: center; width: min(46vw, 220px); height: min(46vw, 220px); margin-inline: auto;
+}
+.vm-rhy-kern {
+  width: 55%; height: 55%; border-radius: 50%; background: var(--copper); box-shadow: var(--shadow-md);
+  transform: scale(.7); opacity: .55; transition: transform .08s ease-out, opacity .08s ease-out, background .2s;
+}
+.vm-rhy-puls.vm-rhy-still .vm-rhy-kern { background: var(--sage); opacity: 1; transform: scale(.85); transition: background .3s; }
+.vm-rhy-schlag .vm-rhy-kern { animation: vm-rhy-schlag .22s ease-out; }
+@keyframes vm-rhy-schlag {
+  0% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(.7); opacity: .55; }
+}
+.vm-rhy-feld { display: flex; gap: 18px; width: 100%; max-width: 640px; justify-content: center; }
+.vm-rhy-feld.vm-rhy-zwei { gap: clamp(14px, 4vw, 32px); }
+.vm-rhy-flaeche {
+  flex: 1; min-height: max(var(--tippmin), 22vh); display: grid; place-items: center; font: 700 1.2em var(--sans);
+  color: var(--ink); background: var(--card); border: 2px solid var(--line); border-radius: var(--radius-lg);
+  box-shadow: var(--highlight), var(--shadow-md); cursor: pointer; transition: border-color .12s, background .12s, transform .08s;
+}
+.vm-rhy-flaeche:active { transform: scale(.98); background: var(--canvas-alt); }
+.vm-rhy-flaeche.vm-rhy-dran { border-color: var(--copper); box-shadow: var(--highlight), 0 0 0 4px var(--copper-subtle); }
+.vm-rhy-flaeche.vm-rhy-getippt { animation: vm-rhy-getippt .35s ease-out; }
+@keyframes vm-rhy-getippt { from { background: var(--sage-light); border-color: var(--sage); } }
+
+/* ---------- Sortieren mit Ziel ---------- */
+.vm-greif-tablett {
+  position: relative; width: 100%; max-width: 520px; height: clamp(160px, 32vh, 260px); margin-inline: auto;
+  background: var(--canvas-alt); border: 1px dashed var(--line-strong); border-radius: var(--radius-lg);
+}
+.vm-greif-objekt {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: var(--tippmin); height: var(--tippmin); padding: 10px; color: var(--copper-text);
+  background: var(--card); border: 2px solid var(--line-strong); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md); cursor: grab; touch-action: none; transition: box-shadow .12s, border-color .12s;
+}
+.vm-greif-objekt svg { width: 100%; height: 100%; }
+.vm-greif-objekt.vm-greif-genommen { border-color: var(--copper); box-shadow: 0 0 0 5px var(--copper-subtle), var(--shadow-md); }
+.vm-greif-objekt.vm-greif-hebt { cursor: grabbing; box-shadow: var(--shadow-lg); z-index: 5; }
+.vm-greif-reihe { display: flex; gap: clamp(12px, 4vw, 28px); width: 100%; max-width: 620px; justify-content: center; flex-wrap: wrap; }
+.vm-greif-behaelter {
+  flex: 1; min-width: 120px; min-height: var(--tippmin); display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 14px 10px; color: var(--muted); background: var(--card); border: 2px solid var(--line); border-radius: var(--radius-lg);
+  box-shadow: var(--highlight), var(--shadow-sm); cursor: pointer; transition: border-color .12s, color .12s, background .12s;
+}
+.vm-greif-symbol { width: 34px; height: 34px; }
+.vm-greif-symbol svg { width: 100%; height: 100%; }
+.vm-greif-name { font-weight: 700; font-size: .95em; }
+.vm-greif-behaelter.vm-greif-aktiv { color: var(--ink); border-color: var(--copper); }
+.vm-greif-behaelter.vm-greif-ueber { background: var(--copper-subtle); border-color: var(--copper); transform: scale(1.03); }
+
+@media (prefers-reduced-motion: reduce) {
+  .vm-rhy-kern, .vm-verb-punkt.vm-verb-tipp circle, .vm-rhy-flaeche.vm-rhy-getippt, .vm-rhy-schlag .vm-rhy-kern { animation: none; }
+}

@@ -1,13 +1,19 @@
 // Kleine UI-Helfer, ausgelegt auf Zittern (Tremor) und Einhand-Bedienung
+import { debouncedMitVerweildauer } from "./bedienung.js";
 
 const DEBOUNCE_MS = 300;
 
 /**
  * Tipp-/Klick-Handler: löst beim Loslassen aus (native click), ignoriert Mehrfach-Tipps
- * innerhalb von 300 ms und funktioniert auch mit Enter/Leertaste.
+ * (Sperrzeit) und wartet bei aktivierter Tipp-Verzögerung (Verweildauer) ein Mindesthalten ab
+ * (beides in den Einstellungen unter „Bedienung“, Standard: nur die Sperrzeit, wie zuvor).
+ * Funktioniert auch mit Enter/Leertaste.
  */
 export function onTap(el, fn) {
-  el.addEventListener("click", debounced(fn));
+  const handler = debouncedMitVerweildauer(fn);
+  el.addEventListener("pointerdown", handler.pointerdown);
+  el.addEventListener("click", handler.click);
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") handler.pointerdown(e); });
   return el;
 }
 
@@ -15,13 +21,10 @@ export function onTap(el, fn) {
 export function debounced(fn) {
   // Sperre gilt je Handler (also je Knopf): Zittern auf DEMSELBEN Ziel wird geschluckt,
   // ein schneller Tipp auf ein ANDERES Ziel (z. B. linke/rechte Fläche) zählt trotzdem.
-  let lastTap = -Infinity;
-  return (e) => {
-    const now = performance.now();
-    if (now - lastTap < DEBOUNCE_MS) return;
-    lastTap = now;
-    fn(e);
-  };
+  // Nutzt dieselbe einstellbare Sperrzeit wie onTap; die Verweildauer (Halten) braucht ein
+  // eigenes pointerdown-Ereignis und gilt daher nur für onTap, nicht für diese Kurzform.
+  const handler = debouncedMitVerweildauer(fn, { verweildauerMs: 0 });
+  return (e) => handler.click(e);
 }
 
 /** Element bauen: h("button.gross", { onTap, text }, kinder…) */

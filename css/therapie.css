@@ -1,0 +1,47 @@
+/* Kopf-Fit – Therapeuten-Bereich. Präfix th- (Ausnahmen: .eingabe, .knopf, .tastenfeld, .taste,
+   .box, .einstellung, .leise-text, .kopf, .zeile-icon, .gefahr – vorhandene Klassen aus style.css). */
+
+.th-pin { gap: 24px; }
+.th-pin-eingabe { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; }
+.th-pin-zeile { font: 500 2.6em var(--serif); letter-spacing: .3em; min-height: 1.2em; }
+.th-vergessen { color: var(--muted); background: transparent; border-color: transparent; box-shadow: none; }
+
+.th-plaene .box, .th-editor .box { margin-bottom: 18px; }
+.th-planliste { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.th-planzeile {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%; text-align: left;
+  justify-content: flex-start;
+}
+.th-planzeile .name { font-weight: 700; }
+.th-abzeichen {
+  margin-left: auto; padding: 3px 10px; border-radius: 999px; background: var(--sage-light); color: var(--sage);
+  font-size: .8em; font-weight: 700;
+}
+
+.th-editor h2 { margin: 0 0 10px; }
+.th-wochentage { flex-wrap: wrap; }
+.th-feld { display: flex; flex-direction: column; gap: 4px; font-weight: 600; color: var(--ink-secondary); min-width: 140px; }
+.th-feld input { min-height: var(--tippmin); font-size: 1.05em; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); }
+.th-min-max { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; }
+.th-notiz {
+  width: 100%; min-height: 4.5em; padding: 12px 14px; border-radius: var(--radius-md); border: 1px solid var(--line-strong);
+  background: var(--card); color: var(--ink); font: inherit; resize: vertical;
+}
+.th-modulauswahl { min-height: var(--tippmin); width: 100%; margin-top: 10px; font-size: 1.05em; border-radius: var(--radius-md); border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); padding: 0 14px; }
+
+.th-uebungsliste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.th-uebungszeile {
+  display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-md);
+  background: var(--canvas-alt);
+}
+.th-uebungskopf { display: flex; align-items: center; gap: 12px; }
+.th-uebungskopf .name { flex: 1; font-weight: 700; }
+.th-pfeile { display: flex; gap: 6px; }
+.th-pfeile .knopf { min-width: calc(var(--tippmin) * .6); min-height: calc(var(--tippmin) * .6); padding: 0; font-size: 1.1em; }
+.th-pfeile .knopf:disabled { opacity: .35; cursor: default; }
+
+.th-qr { display: flex; justify-content: center; padding: 16px; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+.th-qr svg { width: min(72vw, 320px); height: auto; }
+.th-link { width: 100%; font: 500 .95em ui-monospace, monospace; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); resize: vertical; }
+.th-uebernahme { gap: 18px; }
+.th-diagramm svg { width: 100%; height: auto; }

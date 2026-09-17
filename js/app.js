@@ -5,6 +5,9 @@ import { speak, stopSpeaking, setSpeechEnabled } from "./core/speech.js";
 import { exportAll, importAll, load, save } from "./core/store.js";
 import { starteEinstufung, hatZwischenstand } from "./core/einstufung.js";
 import { oeffneBericht } from "./core/bericht.js";
+import { zeigeProfil } from "./core/leistungsprofil.js";
+import { zeigeTherapeutenbereich, aktiverPlan, planAusHashUebernehmen, planModule, planStufe, sitzungsTakt } from "./core/therapie.js";
+import { setzeBedienungsEinstellungen, setzeMusterModus, starteScanning, bedienungsEinstellungenAbschnitte } from "./core/bedienung.js";
 import {
   listProfiles, createProfile, updateProfile, deleteProfile, levelOf, adapt, isBadDay, toggleBadDay, today, MAX_LEVEL,
 } from "./core/profile.js";
@@ -13,21 +16,40 @@ import {
 import reaktion from "./modules/reaktion.js";
 import suchbild from "./modules/suchbild.js";
 import geteilt from "./modules/geteilt.js";
+import wachsam from "./modules/wachsam.js";
+import wachheit from "./modules/wachheit.js";
+import umschalten from "./modules/umschalten.js";
 // Gedächtnis
 import zahlen from "./modules/zahlen.js";
 import wege from "./modules/wege.js";
 import einkaufsliste from "./modules/einkaufsliste.js";
 import gesichter from "./modules/gesichter.js";
 import alltag from "./modules/alltag.js";
+import woerter from "./modules/woerter.js";
+import geschichte from "./modules/geschichte.js";
 // Planen & Denken
 import einkaufen from "./modules/einkaufen.js";
 import turm from "./modules/turm.js";
 import regeln from "./modules/regeln.js";
 import ablauf from "./modules/ablauf.js";
+// Visuomotorik
+import zielen from "./modules/zielen.js";
+import nachfahren from "./modules/nachfahren.js";
+import verbinden from "./modules/verbinden.js";
+import rhythmus from "./modules/rhythmus.js";
+import greifen from "./modules/greifen.js";
+// Beruf & Alltag
+import post from "./modules/post.js";
+import daten from "./modules/daten.js";
+import tagesplan from "./modules/tagesplan.js";
+import telefon from "./modules/telefon.js";
+import bestellung from "./modules/bestellung.js";
 // Sehen & Raum
 import durchstreichen from "./modules/durchstreichen.js";
 import blicksprung from "./modules/blicksprung.js";
 import figuren from "./modules/figuren.js";
+import randsicht from "./modules/randsicht.js";
+import suchen from "./modules/suchen.js";
 // Kartenspiele (Reihenfolge = Kartenspiel-Leiter)
 import sortieren from "./cards/sortieren.js";
 import memory from "./cards/memory.js";
@@ -42,10 +64,12 @@ import skatschule from "./cards/skatschule.js";
 import skat from "./cards/skat.js";
 
 const MODULE = [
-  reaktion, suchbild, geteilt,
-  zahlen, wege, einkaufsliste, gesichter, alltag,
+  reaktion, suchbild, geteilt, wachsam, wachheit, umschalten,
+  zahlen, wege, einkaufsliste, gesichter, alltag, woerter, geschichte,
   einkaufen, turm, regeln, ablauf,
-  durchstreichen, blicksprung, figuren,
+  durchstreichen, blicksprung, figuren, randsicht, suchen,
+  zielen, nachfahren, verbinden, rhythmus, greifen,
+  post, daten, tagesplan, telefon, bestellung,
   sortieren, memory, hoeher, schnipp, maumau, patience, romme, siebzehnundvier, sechsundsechzig, skatschule, skat,
 ];
 const BEREICHE = [
@@ -53,6 +77,8 @@ const BEREICHE = [
   { name: "Gedächtnis", akzent: "a-sage" },
   { name: "Planen & Denken", akzent: "a-pflaume" },
   { name: "Sehen & Raum", akzent: "a-ocker" },
+  { name: "Visuomotorik", akzent: "a-petrol" },
+  { name: "Beruf & Alltag", akzent: "a-schiefer" },
   { name: "Kartenspiele", akzent: "a-copper" },
 ];
 const akzentVon = (m) => BEREICHE.find((b) => b.name === m.bereich).akzent;
@@ -72,6 +98,8 @@ function applySettings() {
   root.dataset.kontrast = s?.kontrast ? "hoch" : "normal";
   root.dataset.ruhig = s?.ruhig ? "ja" : "nein";
   setSpeechEnabled(s?.autoVorlesen ?? false);
+  setzeBedienungsEinstellungen({ verweildauerMs: s?.verweildauerMs ?? 0, sperrzeitMs: s?.sperrzeitMs ?? 300 });
+  setzeMusterModus(s?.farbmuster ?? false);
   const dunkel = root.dataset.theme === "dunkel" || (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
   document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dunkel ? "#161514" : "#F9F7F4");
 }
@@ -103,7 +131,10 @@ function kopfzeile({ titel, eyebrow, zurueck, aktionen = [], schmal = true }) {
 
 // ---------- Tagesvorschlag ----------
 function vorschlag() {
-  // je Bereich die Übung, die am längsten nicht gespielt wurde
+  // Ein aktiver Therapieplan (siehe „Für Therapeutin“) ersetzt den automatischen Vorschlag
+  const therapiePlan = aktiverPlan(profil);
+  if (therapiePlan) return planModule(therapiePlan, MODULE);
+  // sonst: je Bereich die Übung, die am längsten nicht gespielt wurde
   const zuletzt = (id) => {
     for (let i = profil.history.length - 1; i >= 0; i--) if (profil.history[i].modul === id) return profil.history[i].t;
     return 0;
@@ -128,6 +159,15 @@ function wochentage() {
 }
 
 // ---------- Profile ----------
+// Ein Plan-Link (siehe „Für Therapeutin“) kommt oft an, bevor überhaupt ein Profil gewählt ist –
+// den ursprünglichen Hash einmal merken und erst anwenden, sobald `profil` feststeht.
+const planHashBeimStart = typeof location !== "undefined" ? location.hash : "";
+function mitPlanLink(weiter) {
+  if (!/plan=/.test(planHashBeimStart)) return weiter();
+  if (!location.hash) location.hash = planHashBeimStart; // ggf. wiederherstellen (z. B. nach Profilwahl)
+  planAusHashUebernehmen({ app, profil, weiter });
+}
+
 function zeigeProfile() {
   profil = null;
   plan = null;
@@ -137,7 +177,7 @@ function zeigeProfile() {
   const anlegen = () => {
     if (!name.value.trim()) { name.focus(); return; }
     profil = createProfile(name.value);
-    zeigeEinstufung();
+    mitPlanLink(zeigeEinstufung);
   };
   name.addEventListener("keydown", (e) => { if (e.key === "Enter") anlegen(); });
 
@@ -145,7 +185,7 @@ function zeigeProfile() {
     kopfzeile({ titel: "Wer übt heute?", eyebrow: "Kopf-Fit" }),
     h("main.inhalt.schmal", {},
       profile.length ? h("div.profilliste", {}, profile.map((p) =>
-        h("button.profilkarte", { onTap: () => { profil = p; zeigeStart(); } },
+        h("button.profilkarte", { onTap: () => { profil = p; mitPlanLink(zeigeStart); } },
           h("span.avatar", { text: p.name.slice(0, 1).toUpperCase() }), h("span", { text: p.name })))) : null,
       h("section.box", {},
         h("h2", { text: profile.length ? "Neue Person anlegen" : "Wie heißen Sie?" }),
@@ -170,7 +210,9 @@ function zeigeStart() {
       schmal: false,
       eyebrow: datum,
       aktionen: [
+        h("button.knopf", { onTap: () => zeigeProfil({ app, profil, module: MODULE, bereiche: BEREICHE, zurueck: zeigeStart }) }, icon("leistungsprofil"), h("span", { text: "Mein Profil" })),
         h("button.knopf", { onTap: zeigeVerlauf }, icon("verlauf"), h("span", { text: "Verlauf" })),
+        h("button.knopf", { onTap: () => zeigeTherapeutenbereich({ app, profil, module: MODULE, bereiche: BEREICHE, zurueck: zeigeStart }) }, icon("therapie"), h("span", { text: "Für Therapeutin" })),
         einstellungenKnopf(),
       ],
     }),
@@ -184,7 +226,11 @@ function zeigeStart() {
               h("div", {}, h("span.n", { text: i + 1 }), h("span", { text: m.titel })))),
             h("button.knopf.primaer.gross", {
               text: "Training starten",
-              onTap: () => { plan = { liste: heute, index: 0 }; zeigeAnleitung(heute[0]); },
+              onTap: () => {
+                const tp = aktiverPlan(profil);
+                plan = { liste: heute, index: 0, therapie: tp, takt: tp ? sitzungsTakt(tp) : null, start: Date.now() };
+                zeigeAnleitung(heute[0]);
+              },
             })),
           !profil.einstufung || hatZwischenstand(profil)
             ? h("button.knopf.tagesknopf", { onTap: zeigeEinstufung }, icon("einstufung"),
@@ -218,8 +264,14 @@ function zeigeStart() {
 }
 
 // ---------- Anleitung ----------
+function planUebungFuer(m) {
+  if (!plan?.therapie) return null;
+  return plan.therapie.uebungen.find((u) => u.id === m.id) ?? null;
+}
+
 function zeigeAnleitung(m) {
-  const stufe = levelOf(profil, m.id);
+  const pu = planUebungFuer(m);
+  const stufe = pu ? planStufe(pu, levelOf(profil, m.id)) : levelOf(profil, m.id);
   const text = m.anleitung(stufe);
   const schritt = plan ? `Übung ${plan.index + 1} von ${plan.liste.length}` : m.bereich;
   screen(
@@ -238,7 +290,12 @@ function zeigeAnleitung(m) {
 
 // ---------- Übung ----------
 async function starteUebung(m) {
-  const stufe = levelOf(profil, m.id);
+  const pu = planUebungFuer(m);
+  const stufe = pu ? planStufe(pu, levelOf(profil, m.id)) : levelOf(profil, m.id);
+  if (plan?.takt && plan.start) {
+    const minuten = (Date.now() - plan.start) / 60000;
+    if (plan.takt.pruefe(minuten)) speak("Möchten Sie kurz pausieren? Sie können jederzeit weitermachen.");
+  }
   const stage = h("div.stage");
   screen(
     h("header.kopf.uebung-kopf", {},
@@ -377,6 +434,8 @@ function zeigeEinstellungen() {
       wahl("Automatisch vorlesen", "autoVorlesen", [[false, "Aus"], [true, "An"]]),
       wahl("Stärkerer Kontrast", "kontrast", [[false, "Aus"], [true, "An"]]),
       wahl("Weniger Bewegung", "ruhig", [[false, "Aus"], [true, "An"]]),
+      wahl("Muster zusätzlich zu Farben", "farbmuster", [[false, "Aus"], [true, "An"]]),
+      ...bedienungsEinstellungenAbschnitte(s, setze),
       h("section.einstellung", {},
         h("h2", { text: "Daten sichern" }),
         h("p.leise-text", { text: "Alle Daten bleiben auf diesem Gerät. Mit einer Sicherungsdatei lassen sie sich auf ein anderes Gerät übertragen." }),
@@ -406,5 +465,9 @@ function zeigeEinstellungen() {
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
   navigator.serviceWorker.register("sw.js").catch(() => {});
 }
-const profile = listProfiles();
-if (profile.length === 1) { profil = profile[0]; zeigeStart(); } else zeigeProfile();
+function starteApp() {
+  const profile = listProfiles();
+  if (profile.length === 1) { profil = profile[0]; mitPlanLink(zeigeStart); }
+  else zeigeProfile(); // fragt den Plan-Link erst ab, sobald ein Profil gewählt/angelegt ist
+}
+starteApp();

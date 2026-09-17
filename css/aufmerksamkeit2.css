@@ -1,0 +1,149 @@
+/* Kopf-Fit – Module „Wachsam bleiben“, „Schnell bereit“, „Blick wechseln“, „Wörter hören“, „Kurze Geschichten“
+   Präfixe: au-wach- (Vigilanz), au-bereit- (Alertness), au-um- (Umschalten), au-wort- / au-modus- (Wörter,
+   auch von Geschichten genutzt), au-gesch- (Geschichten), au-verlauf- (gemeinsame Verlaufsanzeige) */
+
+/* ---------- Gemeinsam: Leistungsverlauf (Wachsam, Wachheit über den Balken, Wörter-Lernkurve) ---------- */
+.au-verlauf { display: flex; flex-direction: column; gap: 10px; width: min(100%, 560px); }
+.au-verlauf-liste { margin: 0 0 6px; padding-left: 1.2em; color: var(--ink); }
+.au-verlauf-liste li { margin-block: 2px; }
+.au-verlauf-zeile { display: grid; grid-template-columns: minmax(96px, auto) 1fr auto; align-items: center; gap: 12px; }
+.au-verlauf-titel { color: var(--muted); font-weight: 600; font-size: .95em; }
+.au-verlauf-spur { height: 14px; border-radius: 999px; background: var(--canvas-alt); border: 1px solid var(--line); overflow: hidden; }
+.au-verlauf-balken { display: block; height: 100%; border-radius: inherit; background: var(--sage); transition: width .4s ease; }
+.au-verlauf-wert { color: var(--muted); font-size: .9em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.au-verlauf-satz { margin: 4px 0 0; color: var(--ink-secondary); text-align: center; }
+
+/* ---------- Modus-Wahl: Anhören oder Nur lesen (Wörter, Geschichten) ---------- */
+.au-modus { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+.au-modus-knoepfe { flex-wrap: wrap; }
+.au-modus-knopf { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: calc(var(--tippmin) * 2); }
+.au-modus-bild { display: block; width: 40px; height: 40px; }
+
+/* ================= Wachsam bleiben ================= */
+.au-wach-fortschritt { width: min(100%, 640px); height: 8px; border-radius: 999px; background: var(--canvas-alt); border: 1px solid var(--line); overflow: hidden; }
+.au-wach-fortschritt-balken { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--copper); transition: width .2s linear; }
+.au-wach-vorlage { display: flex; align-items: center; gap: 10px; color: var(--muted); font-weight: 600; font-size: .95em; }
+.au-wach-vorlage-bild { display: block; width: 40px; height: 32px; }
+.au-wach-vorlage-bild svg { display: block; width: 100%; height: 100%; }
+.au-wach-rahmen { position: relative; width: 100%; }
+.au-wach-szene {
+  position: relative; width: 100%; height: min(48vh, 380px); min-height: 220px; overflow: hidden;
+  padding: 0; border: 1px solid var(--line); border-radius: var(--radius-xl); cursor: pointer;
+  background: linear-gradient(180deg, var(--canvas-alt) 0%, var(--canvas-alt) 62%, var(--card) 62%, var(--card) 100%);
+  box-shadow: var(--highlight), var(--shadow-md);
+}
+.au-wach-wand { position: absolute; inset: 0 0 38% 0; display: flex; justify-content: space-around; align-items: flex-end; padding-bottom: 14%; pointer-events: none; }
+.au-wach-fenster { width: 14%; aspect-ratio: 5 / 3; border-radius: var(--radius-sm); background: var(--canvas-subtle); border: 1px solid var(--line); opacity: .7; }
+.au-wach-band {
+  position: absolute; left: 0; right: 0; bottom: 20%; height: 18%;
+  background-image: repeating-linear-gradient(90deg, var(--line-strong) 0 3%, transparent 3% 14%);
+  background-color: var(--kartenweiss); border-top: 3px solid var(--line-strong); border-bottom: 3px solid var(--line-strong);
+}
+.au-wach-rollen { position: absolute; left: 0; right: 0; bottom: 16%; height: 8%; display: flex; justify-content: space-evenly; align-items: center; pointer-events: none; }
+.au-wach-rolle { width: 5%; aspect-ratio: 1; border-radius: 50%; background: var(--muted); opacity: .35; }
+.au-wach-paket { position: absolute; bottom: 24%; left: -18%; width: 15%; aspect-ratio: 100 / 80; transition: left .12s linear; will-change: left; }
+.au-wach-paket svg { display: block; width: 100%; height: 100%; }
+.au-wach-karton { fill: var(--copper-light); stroke: var(--copper-dark); stroke-width: 2.5; }
+.au-wach-deckel { fill: var(--copper-dark); opacity: .8; }
+.au-wach-kante, .au-wach-band-klebe { stroke: var(--copper-dark); stroke-width: 1.5; fill: none; opacity: .5; }
+.au-wach-band-klebe { fill: none; }
+.au-wach-etikett { fill: var(--kartenweiss); stroke: var(--copper-dark); stroke-width: 1.5; }
+.au-wach-aufkleber { fill: var(--kartenweiss); stroke: var(--ink); stroke-width: 2.5; }
+.au-wach-aufkleber-kern { fill: var(--sage); }
+.au-wach-ok { position: absolute; inset: -6% -6% auto auto; width: 46%; animation: au-wach-ok .5s ease-out; }
+.au-wach-ok-kreis { fill: var(--sage-light); stroke: var(--sage); stroke-width: 2.5; }
+.au-wach-ok-haken { fill: none; stroke: var(--sage); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+@keyframes au-wach-ok { from { opacity: 0; scale: .6; } }
+.au-wach-pause {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: color-mix(in srgb, var(--canvas) 90%, transparent); border-radius: inherit; text-align: center; padding: 16px;
+}
+.au-wach-pause[hidden] { display: none; }
+:root[data-ruhig="ja"] .au-wach-paket { transition: none; }
+
+/* ================= Schnell bereit ================= */
+.au-bereit-schild { margin: 0; font-weight: 700; color: var(--muted); text-transform: none; }
+.au-bereit-schild[data-bedingung="mit"] { color: var(--blau); }
+.au-bereit-schild[data-bedingung="ohne"] { color: var(--copper-text); }
+.au-bereit-intro { display: flex; flex-direction: column; align-items: center; gap: 18px; max-width: 560px; text-align: center; }
+.au-bereit-flaeche {
+  position: relative; width: min(100%, 460px); height: min(42vh, 320px); min-height: 200px;
+  padding: 0; border: 1px solid var(--line); border-radius: var(--radius-xl); cursor: pointer;
+  background: var(--card); box-shadow: var(--highlight), var(--shadow-md); display: grid; place-items: center;
+}
+.au-bereit-flaeche[hidden] { display: none; }
+.au-bereit-ring {
+  position: absolute; width: 60%; aspect-ratio: 1; border-radius: 50%; border: 6px solid var(--line-strong);
+  opacity: .5; transition: border-color .1s, opacity .1s;
+}
+.au-bereit-ring.an { border-color: var(--blau); opacity: 1; box-shadow: 0 0 0 10px color-mix(in srgb, var(--blau) 16%, transparent); }
+.au-bereit-reiz { width: 30%; aspect-ratio: 1; border-radius: 50%; background: var(--line); opacity: 0; transform: scale(.85); transition: opacity .08s, transform .08s; }
+.au-bereit-reiz.sichtbar { opacity: 1; transform: none; }
+.au-bereit-reiz.ziel { background: var(--sage); box-shadow: 0 0 0 14px var(--sage-light); }
+.au-bereit-reiz.ablenker { background: var(--copper); border-radius: var(--radius-sm); box-shadow: 0 0 0 12px var(--copper-subtle); }
+:root[data-ruhig="ja"] .au-bereit-ring, :root[data-ruhig="ja"] .au-bereit-reiz { transition: none; }
+
+/* ================= Blick wechseln ================= */
+.au-um-feld { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 3vw, 36px); width: 100%; max-width: 900px; }
+.au-um-bereich {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 12px;
+  background: var(--card); border: 3px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--highlight), var(--shadow-sm);
+  transition: border-color .15s, box-shadow .15s;
+}
+.au-um-jetzt {
+  position: absolute; top: -12px; left: 50%; translate: -50% 0; padding: 3px 14px; border-radius: 999px;
+  background: var(--copper-dark); color: var(--on-accent); font-size: .78em; font-weight: 700; opacity: 0; transition: opacity .12s;
+}
+.au-um-feld[data-aktiv="zahl"] .au-um-bereich[data-feld="zahl"],
+.au-um-feld[data-aktiv="buchstabe"] .au-um-bereich[data-feld="buchstabe"] {
+  border-color: var(--copper); box-shadow: var(--highlight), 0 0 0 6px var(--copper-subtle);
+}
+.au-um-feld[data-aktiv="zahl"] .au-um-bereich[data-feld="zahl"] .au-um-jetzt,
+.au-um-feld[data-aktiv="buchstabe"] .au-um-bereich[data-feld="buchstabe"] .au-um-jetzt { opacity: 1; }
+.au-um-feld.au-um-ohne-hinweis .au-um-bereich { border-color: var(--line); box-shadow: var(--highlight), var(--shadow-sm); }
+.au-um-feld.au-um-ohne-hinweis .au-um-jetzt { opacity: 0; }
+.au-um-titel { margin: 0; font: 500 1.1em var(--serif); color: var(--ink); }
+.au-um-frage { margin: 0; color: var(--muted); font-size: .9em; text-align: center; }
+.au-um-zeichen { min-height: 1.3em; font: 700 clamp(2.6em, 9vw, 4.2em)/1 var(--serif); color: var(--ink); }
+.au-um-knoepfe { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; width: 100%; }
+.au-um-antwort { min-width: calc(var(--tippmin) * 1.6); }
+.au-um-antwort.au-um-ok { border-color: var(--sage); background: var(--sage-light); color: var(--ink); }
+
+/* ================= Wörter hören ================= */
+.au-wort-flaeche { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+.au-wort-hoeren { display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 480px; text-align: center; }
+.au-wort-lautsprecher { display: block; width: 64px; height: 64px; color: var(--copper-text); }
+.au-wort-lautsprecher svg { display: block; width: 100%; height: 100%; }
+.au-wort-hoeren.au-wort-spricht .au-wort-lautsprecher { animation: au-wort-puls 1s ease-in-out infinite; }
+@keyframes au-wort-puls { 50% { scale: 1.12; opacity: .75; } }
+.au-wort-karte {
+  min-width: min(90%, 420px); min-height: 96px; display: grid; place-items: center; padding: 20px 36px;
+  font: 500 2em var(--serif); color: var(--ink); background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); box-shadow: var(--highlight), var(--shadow-md);
+}
+.au-wort-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; width: min(100%, 780px); }
+.au-wort-kachel {
+  min-height: var(--tippmin); padding: 12px; font: 600 1.1em var(--sans); color: var(--ink); cursor: pointer;
+  background: var(--card); border: 2px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--highlight), var(--shadow-sm);
+}
+.au-wort-kachel:disabled { cursor: default; }
+.au-wort-kachel.au-wort-an { border-color: var(--copper); background: var(--copper-subtle); }
+.au-wort-kachel.au-wort-getroffen { border-color: var(--sage); background: var(--sage-light); }
+.au-wort-kachel.au-wort-vergessen { border: 3px dashed var(--sage); }
+
+/* ================= Kurze Geschichten (teilt au-modus-/au-wort- mit „Wörter hören“) ================= */
+.au-gesch-flaeche { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; }
+.au-gesch-karte {
+  display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 640px; padding: 28px 32px;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--highlight), var(--shadow-md);
+  transition: opacity .3s;
+}
+.au-gesch-text { margin: 0; font: 500 1.25em/1.55 var(--serif); color: var(--ink); text-align: left; }
+.au-gesch-verblasst { opacity: .4; }
+.au-gesch-spricht { display: inline-block; width: 32px; height: 32px; color: var(--copper-text); animation: au-wort-puls 1s ease-in-out infinite; }
+.au-gesch-antworten { max-width: 640px; }
+
+@media (max-width: 640px) {
+  .au-um-feld { grid-template-columns: 1fr; }
+  .au-modus-knoepfe { flex-direction: column; align-items: stretch; }
+}

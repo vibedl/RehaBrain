@@ -1,0 +1,55 @@
+/* Kopf-Fit – Barrierefreiheit auf Profi-Niveau. Präfix bd-. */
+
+/* Scanning-Hervorhebung: funktioniert auf jedem Element in .stage, ohne dass Module es wissen */
+.bd-scan-aktiv {
+  outline: 5px solid var(--copper) !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 10px var(--copper-subtle) !important;
+  position: relative;
+  z-index: 5;
+  animation: bd-scan-puls 1s ease-in-out infinite;
+}
+:root[data-ruhig="ja"] .bd-scan-aktiv { animation: none; }
+@keyframes bd-scan-puls { 50% { outline-color: var(--copper-dark); } }
+
+/* Großer Bildschirm-Schalter „Auswählen“, den der Koordinator neben die Übung stellt */
+.bd-schalter {
+  position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); transform: translateX(-50%);
+  z-index: 20; min-width: min(80vw, 360px); min-height: calc(var(--tippmin) * 1.3);
+  font: 700 1.3em var(--sans); border-radius: 999px; border: 0; cursor: pointer;
+  background: var(--copper-dark); color: var(--on-accent); box-shadow: var(--shadow-lg);
+}
+.bd-schalter:active { transform: translateX(-50%) scale(.97); }
+
+/* ---------- Farbfehlsichtigkeits-sichere Markierungen ---------- */
+/* Zusätzliche Muster/Symbole, aktiviert über <html class="bd-muster">. Wirkt auf die
+   allgemeinen Zustandsklassen, die die Module bereits nutzen (gefunden/gewählt/markiert usw.),
+   ohne dass Module geändert werden müssen. */
+html.bd-muster .gefunden::after,
+html.bd-muster .gewaehlt::after,
+html.bd-muster .sr-durch-markiert::after,
+html.bd-muster .sr-figuren-richtig::after,
+html.bd-muster .gd-liste-getroffen::after,
+html.bd-muster .aw-fertig .aw-punkt::after {
+  content: "✓";
+  position: absolute; top: 2px; right: 4px; font-size: .75em; font-weight: 900; color: var(--sage);
+  pointer-events: none;
+}
+html.bd-muster .sr-figuren-gewaehlt::after,
+html.bd-muster .pl-turm-stab.gewaehlt::after,
+html.bd-muster .th-planzeile.aktiv::after {
+  content: "◆";
+  position: absolute; top: 2px; right: 4px; font-size: .7em; color: var(--copper);
+  pointer-events: none;
+}
+html.bd-muster .reiz.gruen::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 2em; font-weight: 900; color: #fff; }
+html.bd-muster .reiz.rot::after { content: "✕"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 2em; font-weight: 900; color: #fff; }
+html.bd-muster .stapel.gruen::before, html.bd-muster .karte.gruen::before { content: "●"; margin-right: 3px; font-size: .7em; }
+html.bd-muster .stapel.rot::before, html.bd-muster .karte.rot::before { content: "▲"; margin-right: 3px; font-size: .7em; }
+
+/* Elemente, an denen Muster angehängt werden, brauchen position:relative als Anker */
+html.bd-muster .gefunden, html.bd-muster .gewaehlt, html.bd-muster .sr-durch-markiert,
+html.bd-muster .sr-figuren-richtig, html.bd-muster .sr-figuren-gewaehlt, html.bd-muster .gd-liste-getroffen,
+html.bd-muster .pl-turm-stab.gewaehlt, html.bd-muster .th-planzeile.aktiv, html.bd-muster .reiz.sichtbar {
+  position: relative;
+}
